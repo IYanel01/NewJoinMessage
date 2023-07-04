@@ -1,0 +1,47 @@
+#The NewJoinMessage plugin is a custom plugin designed for Bukkit/Spigot servers. It allows players to set their own join and leave messages, providing a personalized touch to the server experience.
+#1.8 - 1.20 ✔
+about:
+  - "NewJoinMessage Plugin"
+  - "Version: 1.5 Beta"
+  - "Author: [Yanel, oled]"
+
+
+
+#Permissions: joinleave.reload; or reload command , joinleave.set.join; for set join command message , joinleave.set.leave; for set leave message
+
+
+
+# MySQL Configuration
+mysql:
+  enabled: false
+  host: localhost
+  port: 3306
+  database: your_database
+  username: your_username
+  password: your_password
+
+
+#Please make sure not to exceed 9 words in your messages to prevent any issues with the plugin.
+
+# Join and leave messages
+
+#Join/Leave Prefix
+join-prefix: "&d[&a+&d]"
+leave-prefix: "&7[&c-&7]"
+
+#default Join/leave message
+default-join-prefix: "&7PLAYERNAME &5has joined"
+default-leave-prefix: "&4PLAYERNAME has left"
+
+
+#default Join/Leave Message by Player (PLAYERNAME has joined/left - Welcome!/Goodbye)
+default-join-message: "&dWelcome!"
+default-leave-message: "&cGoodbye!"
+
+# New Player Counter settings
+#WARN: It needs to restart the Server after do any change on it
+New-player-counter: false
+Welcome-message: "&7Welcome &e&lPLAYERNAME &7to the server!"
+
+
+
