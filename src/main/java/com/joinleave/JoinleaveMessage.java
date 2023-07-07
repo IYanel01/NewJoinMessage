@@ -39,7 +39,7 @@ public class JoinleaveMessage extends JavaPlugin implements CommandExecutor, Lis
     public void onEnable() {
         saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(this, this);
-        int pluginId = YourBStatsIDHERE;
+        int pluginId = 18952;
         Metrics Metrics = new Metrics(this, pluginId);
         PlayerWelcome playerWelcome = new PlayerWelcome(this);
         Bukkit.getPluginManager().registerEvents(playerWelcome, this);
@@ -235,7 +235,7 @@ public class JoinleaveMessage extends JavaPlugin implements CommandExecutor, Lis
             messageTypes.add("leave");
             StringUtil.copyPartialMatches(args[1], messageTypes, completions);
         }
-
+ 
         Collections.sort(completions);
         return completions;
     }
@@ -262,7 +262,7 @@ public class JoinleaveMessage extends JavaPlugin implements CommandExecutor, Lis
         player.sendMessage("");
         player.sendMessage(ChatColor.DARK_PURPLE + "         NewJoinMessage Help");
         player.sendMessage("");
-        player.sendMessage(ChatColor.GRAY + "    JoinMessage version: " + ChatColor.GREEN + "1.5 Beta" + ChatColor.GREEN + " ✔");
+        player.sendMessage(ChatColor.GRAY + "    JoinMessage version: " + ChatColor.GREEN + "2.0 Beta" + ChatColor.GREEN + " ✔");
         player.sendMessage("");
         player.sendMessage(ChatColor.GRAY + "    Made With " + ChatColor.RED + "❤" + ChatColor.GRAY + " by Yanel");
         player.sendMessage("");

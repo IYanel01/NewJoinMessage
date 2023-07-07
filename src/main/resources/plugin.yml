@@ -1,5 +1,5 @@
 name: JoinleaveMessage
-version: '1.5 Beta'
+version: '2.0 Beta'
 main: com.joinleave.JoinleaveMessage
 authors: [ Yanel, oled ]
 description: this plugin is for join/leave message per player
@@ -25,7 +25,7 @@ permissions:
     description: Allows players to set their leave message.
     default: op
   joinleave.reload:
-    description: Allow Players to Reload the Plugin
+    description: Allow Players to Reload the Plugin.
     default: op
   joinleave.gui:
     description: Allow Players to Open the GUI
