@@ -6,7 +6,6 @@ about:
   - "Author: [Yanel, oled]"
 
 
-
 #Permissions: joinleave.reload; or reload command , joinleave.set.join; for set join command message , joinleave.set.leave; for set leave message
 
 
@@ -38,10 +37,14 @@ default-leave-prefix: "&4PLAYERNAME has left"
 default-join-message: "&dWelcome!"
 default-leave-message: "&cGoodbye!"
 
-# New Player Counter settings
-#WARN: It needs to restart the Server after do any change on it
-New-player-counter: false
-Welcome-message: "&7Welcome &e&lPLAYERNAME &7to the server!"
+
+# Configuration file for New Player Welcome
+
+# Enable/disable the welcome message
+welcome-message-enabled: true
+
+# Customize the welcome message
+welcome-message: "&e&l[!] &7Welcome %player% to the server! You are the %count% player!"
 
 
 
