@@ -39,7 +39,7 @@ public class JoinleaveMessage extends JavaPlugin implements CommandExecutor, Lis
     public void onEnable() {
         saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(this, this);
-        int pluginId = 18952;
+        int pluginId = YourBStatsIDHERE;
         Metrics Metrics = new Metrics(this, pluginId);
         PlayerWelcome playerWelcome = new PlayerWelcome(this);
         Bukkit.getPluginManager().registerEvents(playerWelcome, this);
