@@ -1,0 +1,32 @@
+name: JoinleaveMessage
+version: '1.5 Beta'
+main: com.joinleave.JoinleaveMessage
+authors: [ Yanel, oled ]
+description: this plugin is for join/leave message per player
+website: https://zaxnetworks.xyz
+
+listeners:
+  - com.joinleave.FireworkPlayerJoinListener
+
+commands:
+  njm:
+    description: Set join/leave messages
+    usage: /njm set <join/leave> <message>
+#  njmreload:
+#    description: Reload the plugin
+#    usage: /njm reload
+
+
+permissions:
+  joinleave.set.join:
+    description: Allows players to set their join message.
+    default: op
+  joinleave.set.leave:
+    description: Allows players to set their leave message.
+    default: op
+  joinleave.reload:
+    description: Allow Players to Reload the Plugin
+    default: op
+  joinleave.gui:
+    description: Allow Players to Open the GUI
+    default: op

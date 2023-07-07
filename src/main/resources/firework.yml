@@ -1,0 +1,25 @@
+# Configuration file for Firework Display
+
+fireworks:
+  # Specifies whether the firework display is enabled or disabled.
+  # Set to true to enable the firework display, or false to disable it.
+  enabled: true
+
+  # Specifies the type of firework effect to be used.
+  # Available options: BALL, BALL_LARGE, BURST, CREEPER, STAR
+  type: BALL
+
+  # Specifies the power of the firework.
+  # Higher values result in a higher launch and longer duration.
+  # Set to 0 for a small firework display.
+  power: 0
+
+  # Specifies the colors of the firework effect.
+  colors:
+    - 2aa149  # Green color
+    - ae15d4  # Purple color
+
+  # Specifies the fade colors of the firework effect.
+  # Fade colors transition between the main colors.
+  fade-colors:
+    - 00baed  # Blue color
