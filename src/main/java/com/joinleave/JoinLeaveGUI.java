@@ -8,8 +8,6 @@ import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.StringPrompt;
 import org.bukkit.conversations.ConversationContext;
-
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -38,12 +36,6 @@ public class JoinLeaveGUI implements Listener {
     }
 
     public void openGUI(Player player) {
-        // Check if player has permission
-        if (!player.hasPermission("joinleave.gui")) {
-            player.sendMessage(ChatColor.RED + "You do not have permission to open gui.");
-            return;
-        }
-
         Inventory gui = Bukkit.createInventory(null, 9, "JoinLeave GUI");
 
         ItemStack joinItem = createItem(Material.SLIME_BLOCK, ChatColor.BOLD + " " + ChatColor.GREEN + "Set Join Message", "/njm set join <message>");
@@ -61,9 +53,6 @@ public class JoinLeaveGUI implements Listener {
 
         player.openInventory(gui);
     }
-
-
-
 
     private ItemStack createItem(Material material, String name, String command) {
         ItemStack item = new ItemStack(material);
@@ -87,11 +76,19 @@ public class JoinLeaveGUI implements Listener {
                 if (meta.hasLore()) {
                     String command = meta.getLore().get(0);
                     if (command.startsWith("/njm set join")) {
-                        player.closeInventory();
-                        startMessageSettingConversation(player, "join");
+                        if (player.hasPermission("joinleave.set.join")) {
+                            player.closeInventory();
+                            startMessageSettingConversation(player, "join");
+                        } else {
+                            player.sendMessage(ChatColor.RED + "You don't have permission to set the join message.");
+                        }
                     } else if (command.startsWith("/njm set leave")) {
-                        player.closeInventory();
-                        startMessageSettingConversation(player, "leave");
+                        if (player.hasPermission("joinleave.set.leave")) {
+                            player.closeInventory();
+                            startMessageSettingConversation(player, "leave");
+                        } else {
+                            player.sendMessage(ChatColor.RED + "You don't have permission to set the leave message.");
+                        }
                     }
                 }
             }
@@ -131,7 +128,6 @@ public class JoinLeaveGUI implements Listener {
         conversation.getContext().setSessionData("messageType", messageType); // Store message type
         conversation.begin();
     }
-
 
     private void setMessage(Player player, String messageType, String message) {
         JoinleaveMessage instance = (JoinleaveMessage) plugin;

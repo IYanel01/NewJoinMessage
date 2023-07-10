@@ -1,5 +1,5 @@
 name: JoinleaveMessage
-version: '2.0 Beta'
+version: '2.5 Beta'
 main: com.joinleave.JoinleaveMessage
 authors: [ Yanel, oled ]
 description: this plugin is for join/leave message per player
@@ -10,23 +10,31 @@ listeners:
 
 commands:
   njm:
-    description: Set join/leave messages
-    usage: /njm set <join/leave> <message>
-#  njmreload:
-#    description: Reload the plugin
-#    usage: /njm reload
-
+    description: NewJoinMessage command
+    usage: /<command> [subcommand]
+    tab-complete: true
 
 permissions:
   joinleave.set.join:
     description: Allows players to set their join message.
     default: op
+
   joinleave.set.leave:
     description: Allows players to set their leave message.
     default: op
+
   joinleave.reload:
-    description: Allow Players to Reload the Plugin.
+    description: Allows players to reload the plugin.
     default: op
+
   joinleave.gui:
-    description: Allow Players to Open the GUI
+    description: Allows players to open the GUI.
+    default: op
+
+  joinleave.setplayer:
+    description: Allows players to set join/leave messages for another player.
+    default: op
+
+  joinleave.clearplayer:
+    description: Allows players to clear join/leave messages for another player.
     default: op

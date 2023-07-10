@@ -3,7 +3,7 @@ package com.joinleave;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -26,7 +26,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
 
-public class JoinleaveMessage extends JavaPlugin implements CommandExecutor, Listener {
+public class JoinleaveMessage extends JavaPlugin implements Listener {
 
     private FileConfiguration playersConfig;
     private File playersFile;
@@ -35,7 +35,6 @@ public class JoinleaveMessage extends JavaPlugin implements CommandExecutor, Lis
 
 
 
-    @Override
     public void onEnable() {
         saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(this, this);
@@ -43,17 +42,17 @@ public class JoinleaveMessage extends JavaPlugin implements CommandExecutor, Lis
         Metrics Metrics = new Metrics(this, pluginId);
         PlayerWelcome playerWelcome = new PlayerWelcome(this);
         Bukkit.getPluginManager().registerEvents(playerWelcome, this);
-        // Register the command executor for the '/njm' command
-        getCommand("njm").setExecutor(this);
 
+        JoinleaveCommand joinLeaveCommand = new JoinleaveCommand(this);
+        getCommand("njm").setExecutor(joinLeaveCommand);
         // Register JoinLeaveGUI listener
         JoinLeaveGUI guiListener = new JoinLeaveGUI(this);
         getServer().getPluginManager().registerEvents(guiListener, this);
 
-                playersFile = new File(getDataFolder(), "data.yml");
+
+        playersFile = new File(getDataFolder(), "data.yml");
         if (!playersFile.exists()) {
             saveResource("data.yml", false);
-
         }
         playersConfig = YamlConfiguration.loadConfiguration(playersFile);
 
@@ -65,6 +64,9 @@ public class JoinleaveMessage extends JavaPlugin implements CommandExecutor, Lis
                 getLogger().severe("Failed to connect to MySQL. Please check your configuration.");
             }
         }
+
+        // Register the command executor for the '/njm' command
+        getCommand("njm").setExecutor(new JoinleaveCommand(this));
     }
 
     @Override
@@ -118,105 +120,6 @@ public class JoinleaveMessage extends JavaPlugin implements CommandExecutor, Lis
         }
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("This command can only be run by a player.");
-            return true;
-        }
-
-
-        Player player = (Player) sender;
-
-        if (args.length == 1 && args[0].equalsIgnoreCase("gui")) {
-            // Open the GUI
-            JoinLeaveGUI gui = new JoinLeaveGUI(this);
-            gui.openGUI(player);
-            return true;
-        }
-
-
-        if (args.length == 1 && args[0].equalsIgnoreCase("set")) {
-            // Show the list of available set commands
-            displaySetCommands(player);
-            return true;
-        }
-
-        if (args.length >= 2 && args[0].equalsIgnoreCase("set")) {
-            String messageType = args[1].toLowerCase();
-
-            if (args.length == 2) {
-                // Show the list of available sub-commands for the specified message type
-                displaySubCommands(player, messageType);
-                return true;
-            }
-
-            String message = ChatColor.translateAlternateColorCodes('&', String.join(" ", args).substring(args[0].length() + args[1].length() + 2));
-
-            if (messageType.equals("join") || messageType.equals("leave")) {
-                // Check for permission before allowing the player to set the message
-                if (messageType.equals("join") && !player.hasPermission("joinleave.set.join")) {
-                    player.sendMessage(ChatColor.RED + "You don't have permission to set the join message.");
-                    return true;
-                }
-
-                if (messageType.equals("leave") && !player.hasPermission("joinleave.set.leave")) {
-                    player.sendMessage(ChatColor.RED + "You don't have permission to set the leave message.");
-                    return true;
-                }
-
-                setMessage(player, messageType, message);
-                player.sendMessage(ChatColor.DARK_PURPLE + "Your " + messageType + " message has been set.");
-            } else {
-                player.sendMessage(ChatColor.RED + "Invalid message type. Use 'join' or 'leave'.");
-            }
-
-            return true;
-        }
-
-        if (args.length >= 1 && args[0].equalsIgnoreCase("reload")) {
-            // Check for permission before allowing the player to reload the plugin
-            if (!player.hasPermission("joinleave.reload")) {
-                player.sendMessage(ChatColor.RED + "You don't have permission to reload the plugin.");
-                return true;
-            }
-
-            reloadPlugin(player);
-            return true;
-        }
-
-        displayHelpMenu(player);
-        return true;
-    }
-
-    private void displaySetCommands(Player player) {
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-        player.sendMessage("");
-        player.sendMessage(ChatColor.DARK_PURPLE + "         NewJoinMessage Set Commands");
-        player.sendMessage("");
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "  /njm set join <message>" + ChatColor.DARK_PURPLE + " - Set your join message");
-        player.sendMessage("");
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "  /njm set leave <message>" + ChatColor.DARK_PURPLE + " - Set your leave message");
-        player.sendMessage("");
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    }
-
-    private void displaySubCommands(Player player, String messageType) {
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-        player.sendMessage("");
-        player.sendMessage(ChatColor.DARK_PURPLE + "         NewJoinMessage " + capitalize(messageType) + " Commands");
-        player.sendMessage("");
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "  /njm set " + messageType + " <message>" + ChatColor.DARK_PURPLE + " - Set your " + messageType + " message");
-        player.sendMessage("");
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    }
-
-    private String capitalize(String str) {
-        if (str == null || str.isEmpty()) {
-            return str;
-        }
-        return str.substring(0, 1).toUpperCase() + str.substring(1);
-    }
 
 
     @Override
@@ -225,25 +128,49 @@ public class JoinleaveMessage extends JavaPlugin implements CommandExecutor, Lis
 
         if (args.length == 1) {
             List<String> subCommands = new ArrayList<>();
+            subCommands.add("setplayer");
             subCommands.add("set");
             subCommands.add("gui");
+            subCommands.add("clear");
             subCommands.add("reload");
             StringUtil.copyPartialMatches(args[0], subCommands, completions);
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("set")) {
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("setplayer")) {
+            List<String> playerNames = new ArrayList<>();
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                playerNames.add(player.getName());
+            }
+            StringUtil.copyPartialMatches(args[1], playerNames, completions);
+        } else if (args.length == 3 && args[0].equalsIgnoreCase("setplayer")) {
+            List<String> messageTypes = new ArrayList<>();
+            messageTypes.add("join");
+            messageTypes.add("leave");
+            StringUtil.copyPartialMatches(args[2], messageTypes, completions);
+        } else if (args.length == 2 && (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("clear"))) {
             List<String> messageTypes = new ArrayList<>();
             messageTypes.add("join");
             messageTypes.add("leave");
             StringUtil.copyPartialMatches(args[1], messageTypes, completions);
         }
- 
+
         Collections.sort(completions);
         return completions;
     }
 
 
-    private void reloadPlugin(Player player) {
+
+
+    public void reloadPlugin(CommandSender sender) {
         reloadConfig();
         reloadPlayersConfig();
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+            player.sendMessage(ChatColor.LIGHT_PURPLE + "Plugin reloaded" + ChatColor.GREEN + " ✔");
+        } else {
+            // Handle console reload message
+            getLogger().info("Plugin reloaded successfully.");
+        }
+
+
 
         closeMySQLConnection();
         mysqlEnabled = getConfig().getBoolean("mysql.enabled");
@@ -254,33 +181,26 @@ public class JoinleaveMessage extends JavaPlugin implements CommandExecutor, Lis
                 getLogger().severe("Failed to connect to MySQL. Please check your configuration.");
             }
         }
-
-        player.sendMessage(ChatColor.DARK_PURPLE + "Plugin reloaded" + ChatColor.GREEN + " ✔" );
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+            player.sendMessage(ChatColor.DARK_PURPLE + "Mysql has been reloaded" + ChatColor.GREEN + " ✔");
+        }
     }
-    private void displayHelpMenu(Player player) {
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-        player.sendMessage("");
-        player.sendMessage(ChatColor.DARK_PURPLE + "         NewJoinMessage Help");
-        player.sendMessage("");
-        player.sendMessage(ChatColor.GRAY + "    JoinMessage version: " + ChatColor.GREEN + "2.0 Beta" + ChatColor.GREEN + " ✔");
-        player.sendMessage("");
-        player.sendMessage(ChatColor.GRAY + "    Made With " + ChatColor.RED + "❤" + ChatColor.GRAY + " by Yanel");
-        player.sendMessage("");
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "  /njm set join <message>" + ChatColor.DARK_PURPLE + " - Set your join message");
-        player.sendMessage("");
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "  /njm set leave <message>" + ChatColor.DARK_PURPLE + " - Set your leave message");
-        player.sendMessage("");
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "  /njm gui" + ChatColor.DARK_PURPLE + " - To open gui");
-        player.sendMessage("");
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "  /njm reload" + ChatColor.DARK_PURPLE + " - Reload the plugin");
-        player.sendMessage("");
-        String joinMessage = getMessage(player, "join", "default-join-message");
-        String leaveMessage = getMessage(player, "leave", "default-leave-message");
+    public void clearMessage(Player player, String messageType) {
+        if (messageType.equals("all")) {
+            // Clear all join/leave messages for the player
+            setMessage(player, "join", "");
+            setMessage(player, "leave", "");
+        } else {
+            // Clear specific join/leave message for the player
+            setMessage(player, messageType, "");
+        }
+    }
 
-        player.sendMessage(ChatColor.GREEN + "Your current Join Message: " + ChatColor.RESET + (joinMessage.equals(getConfig().getString("default-join-message")) ? ChatColor.GRAY + "Using default message" : joinMessage));
-        player.sendMessage(ChatColor.GREEN + "Your current Leave Message: " + ChatColor.RESET + (leaveMessage.equals(getConfig().getString("default-leave-message")) ? ChatColor.GRAY + "Using default message" : leaveMessage));
-
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    public void resetPlayerMessages(Player player) {
+        // Reset the player's messages to default
+        setMessage(player, "join", getConfig().getString("default-join-message"));
+        setMessage(player, "leave", getConfig().getString("default-leave-message"));
     }
 
     @EventHandler
