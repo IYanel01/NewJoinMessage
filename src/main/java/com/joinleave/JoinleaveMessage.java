@@ -35,9 +35,9 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
     private Connection connection;
     private boolean mysqlEnabled;
 
-    private final String pluginVersion = "1.0.0"; // Replace with your plugin's current version
+    private final String pluginVersion = "2.5";
 
-    private final String updateURL = "https://www.spigotmc.org/resources/110979/"; // Replace with your plugin's update URL
+    private final String updateURL = "https://www.spigotmc.org/resources/110979/";
 
 
     public void onEnable() {
@@ -85,7 +85,7 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
 
     private void checkForUpdates() {
         // Retrieve the latest version of your plugin from your update source
-        String latestVersion = ""; // Replace with your logic to fetch the latest version
+        String latestVersion = "2.5";
 
         // Retrieve the player's current plugin version
         String playerVersion = getDescription().getVersion();
@@ -103,7 +103,7 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
             // Send clickable message to player
             Player[] onlinePlayers = getServer().getOnlinePlayers().toArray(new Player[0]);
             for (Player player : onlinePlayers) {
-                if (player.hasPermission("yourplugin.update")) { // Adjust the permission node according to your needs
+                if (player.hasPermission("joinleave.update")) { // Adjust the permission node according to your needs
                     player.sendMessage(ChatColor.RED + "An update is available for the plugin!");
                     player.sendMessage(ChatColor.RED + "Please update to version " + latestVersion + ".");
                     player.sendMessage(ChatColor.RED + "Download the latest version from: " + ChatColor.BLUE + updateURL);

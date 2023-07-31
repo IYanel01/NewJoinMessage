@@ -42,3 +42,6 @@ permissions:
   joinleave.info:
     description: Allows players to view player information.
     default: op
+  joinleave.update:
+    description: Check for update.
+    default: op
