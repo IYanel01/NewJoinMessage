@@ -64,13 +64,17 @@
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
     </repositories>
-
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.12-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.gitee.chinasoft_ohos</groupId>
+            <artifactId>Material-ViewPagerIndicator</artifactId>
+            <version>1.0.5</version>
         </dependency>
     </dependencies>
 </project>

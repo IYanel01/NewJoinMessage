@@ -1,5 +1,6 @@
 package com.joinleave;
 
+import com.joinleave.Handler.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -16,11 +17,23 @@ import java.util.List;
 public class JoinleaveCommand implements CommandExecutor, TabCompleter {
 
     private final JoinleaveMessage plugin;
+    private final MessageHandler messageHandler;
+    private final SetPlayerHandler setPlayerHandler;
+    private final SetHandler setHandler;
+    private final GuiHandler guiHandler;
+    private final ClearHandler clearHandler;
+    private final ReloadHandler reloadHandler;
 
+    // Constructor
     public JoinleaveCommand(JoinleaveMessage plugin) {
         this.plugin = plugin;
+        this.messageHandler = new MessageHandler(plugin);
+        this.setPlayerHandler = new SetPlayerHandler(plugin);
+        this.setHandler = new SetHandler(plugin);
+        this.guiHandler = new GuiHandler(plugin);
+        this.clearHandler = new ClearHandler(plugin);
+        this.reloadHandler = new ReloadHandler(plugin);
     }
-
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -29,108 +42,28 @@ public class JoinleaveCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (args.length >= 2 && args[0].equalsIgnoreCase("info")) {
+            return messageHandler.handleInfoCommand(sender, args);
+        }
+
         if (args.length >= 4 && args[0].equalsIgnoreCase("setplayer")) {
-            if (!sender.hasPermission("joinleave.setplayer")) {
-                sender.sendMessage(ChatColor.RED + "You don't have permission to set join/leave messages for other players.");
-                return true;
-            }
-
-            Player target = Bukkit.getPlayer(args[1]);
-
-            if (target == null) {
-                sender.sendMessage(ChatColor.RED + "Player not found.");
-                return true;
-            }
-
-            String messageType = args[2].toLowerCase();
-            String message = ChatColor.translateAlternateColorCodes('&', String.join(" ", args).substring(args[0].length() + args[1].length() + args[2].length() + 3));
-
-            if (messageType.equals("join") || messageType.equals("leave")) {
-                plugin.setMessage(target, messageType, message);
-                sender.sendMessage(ChatColor.GREEN + "Successfully set the " + messageType + " message for player " + target.getName());
-            } else {
-                sender.sendMessage(ChatColor.RED + "Invalid message type. Use 'join' or 'leave'.");
-            }
-            return true;
+            return setPlayerHandler.handleSetPlayerCommand(sender, args);
         }
 
         if (args.length >= 3 && args[0].equalsIgnoreCase("set")) {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
-                String messageType = args[1].toLowerCase();
-                String message = ChatColor.translateAlternateColorCodes('&', String.join(" ", args).substring(args[0].length() + args[1].length() + 2));
-
-                if (messageType.equals("join") || messageType.equals("leave")) {
-                    if ((messageType.equals("join") && !player.hasPermission("joinleave.set.join")) ||
-                            (messageType.equals("leave") && !player.hasPermission("joinleave.set.leave"))) {
-                        sender.sendMessage(ChatColor.RED + "You don't have permission to set " + messageType + " messages.");
-                        return true;
-                    }
-
-                    plugin.setMessage(player, messageType, message);
-                    sender.sendMessage(ChatColor.GREEN + "Successfully set your " + messageType + " message.");
-                } else {
-                    sender.sendMessage(ChatColor.RED + "Invalid message type. Use 'join' or 'leave'.");
-                }
-                return true;
-            } else {
-                sender.sendMessage(ChatColor.RED + "This command can only be executed by a player.");
-                return true;
-            }
+            return setHandler.handleSetCommand(sender, args);
         }
 
         if (args.length == 1 && args[0].equalsIgnoreCase("gui")) {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
-                // Open the GUI
-                JoinLeaveGUI gui = new JoinLeaveGUI(plugin);
-                gui.openGUI(player);
-                return true;
-            } else {
-                sender.sendMessage(ChatColor.RED + "This command can only be executed by a player.");
-                return true;
-            }
+            return guiHandler.handleGuiCommand(sender);
         }
 
-
         if (args.length >= 3 && args[0].equalsIgnoreCase("clear")) {
-            if (!sender.hasPermission("joinleave.clearplayer")) {
-                sender.sendMessage(ChatColor.RED + "You don't have permission to clear join/leave messages for other players.");
-                return true;
-            }
-
-            String messageType = args[1].toLowerCase();
-            Player target = Bukkit.getPlayer(args[2]);
-
-            if (target == null) {
-                sender.sendMessage(ChatColor.RED + "Player not found.");
-                return true;
-            }
-
-            if (messageType.equals("all") || messageType.equals("join") || messageType.equals("leave")) {
-                plugin.clearMessage(target, messageType);
-                sender.sendMessage(ChatColor.GREEN + "Successfully cleared the " + messageType + " message for player " + target.getName());
-
-                if (messageType.equals("all")) {
-                    plugin.resetPlayerMessages(target);
-                    sender.sendMessage(ChatColor.GREEN + "Player " + target.getName() + " has been reset to default messages.");
-                }
-
-            } else {
-                sender.sendMessage(ChatColor.RED + "Invalid message type. Use 'all', 'join', or 'leave'.");
-            }
-            return true;
+            return clearHandler.handleClearCommand(sender, args);
         }
 
         if (args[0].equalsIgnoreCase("reload")) {
-            if (!sender.hasPermission("joinleave.reload")) {
-                sender.sendMessage(ChatColor.RED + "You don't have permission to reload the plugin.");
-                return true;
-            }
-
-            // Reload the plugin
-            plugin.reloadPlugin(sender);
-            return true;
+            return reloadHandler.handleReloadCommand(sender);
         }
 
         // Display help menu
@@ -149,6 +82,7 @@ public class JoinleaveCommand implements CommandExecutor, TabCompleter {
             subCommands.add("gui");
             subCommands.add("clear");
             subCommands.add("reload");
+            subCommands.add("info");
             StringUtil.copyPartialMatches(args[0], subCommands, completions);
         } else if (args.length == 2 && args[0].equalsIgnoreCase("setplayer")) {
             List<String> playerNames = new ArrayList<>();
@@ -166,6 +100,12 @@ public class JoinleaveCommand implements CommandExecutor, TabCompleter {
             messageTypes.add("join");
             messageTypes.add("leave");
             completions = messageTypes;
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("info")) {
+            List<String> playerNames = new ArrayList<>();
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                playerNames.add(player.getName());
+            }
+            StringUtil.copyPartialMatches(args[1], playerNames, completions);
         } else if (args.length == 2 && args[0].equalsIgnoreCase("clear")) {
             List<String> messageTypes = new ArrayList<>();
             messageTypes.add("all");
@@ -177,8 +117,6 @@ public class JoinleaveCommand implements CommandExecutor, TabCompleter {
         Collections.sort(completions);
         return completions;
     }
-
-
 
     private void displayHelpMenu(CommandSender sender) {
         sender.sendMessage(ChatColor.LIGHT_PURPLE + "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
@@ -195,7 +133,8 @@ public class JoinleaveCommand implements CommandExecutor, TabCompleter {
         boolean hasClearPlayerPermission = sender.hasPermission("joinleave.clearplayer");
         boolean hasReloadPermission = sender.hasPermission("joinleave.reload");
         boolean hasGuiPermission = sender.hasPermission("joinleave.gui");
-        boolean hasAnyPermission = hasSetJoinPermission || hasSetLeavePermission || hasSetPlayerPermission || hasClearPlayerPermission || hasReloadPermission || hasGuiPermission;
+        boolean hasInfoPermission = sender.hasPermission("joinleave.Info");
+        boolean hasAnyPermission = hasSetJoinPermission || hasSetLeavePermission || hasSetPlayerPermission || hasClearPlayerPermission || hasReloadPermission || hasGuiPermission || hasInfoPermission;
         if (!hasAnyPermission) {
             sender.sendMessage(" ");
             sender.sendMessage(ChatColor.RED + "Sorry, it seems that you don't have any permissions. Please contact an administrator or obtain a rank to get permissions.");
@@ -221,6 +160,10 @@ public class JoinleaveCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage(" ");
                 sender.sendMessage(ChatColor.LIGHT_PURPLE + "  /njm gui" + ChatColor.DARK_PURPLE + " - To open the GUI");
             }
+            if (hasInfoPermission) {
+                sender.sendMessage(" ");
+                sender.sendMessage(ChatColor.LIGHT_PURPLE + "  /njm Info [Player]" + ChatColor.DARK_PURPLE + " - To See Another players Info");
+            }
             if (hasReloadPermission) {
                 sender.sendMessage(" ");
                 sender.sendMessage(ChatColor.LIGHT_PURPLE + "  /njm reload" + ChatColor.DARK_PURPLE + " - Reload the plugin");
@@ -239,5 +182,4 @@ public class JoinleaveCommand implements CommandExecutor, TabCompleter {
 
         sender.sendMessage(ChatColor.LIGHT_PURPLE + "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
     }
-
 }

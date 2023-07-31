@@ -25,6 +25,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class JoinleaveMessage extends JavaPlugin implements Listener {
 
@@ -33,6 +35,9 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
     private Connection connection;
     private boolean mysqlEnabled;
 
+    private final String pluginVersion = "1.0.0"; // Replace with your plugin's current version
+
+    private final String updateURL = "https://www.spigotmc.org/resources/110979/"; // Replace with your plugin's update URL
 
 
     public void onEnable() {
@@ -42,13 +47,15 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
         Metrics Metrics = new Metrics(this, pluginId);
         PlayerWelcome playerWelcome = new PlayerWelcome(this);
         Bukkit.getPluginManager().registerEvents(playerWelcome, this);
-
+        String defaultEncoding = System.getProperty("file.encoding");
+        getLogger().info("Default system encoding: " + defaultEncoding);
         JoinleaveCommand joinLeaveCommand = new JoinleaveCommand(this);
         getCommand("njm").setExecutor(joinLeaveCommand);
         // Register JoinLeaveGUI listener
         JoinLeaveGUI guiListener = new JoinLeaveGUI(this);
         getServer().getPluginManager().registerEvents(guiListener, this);
-
+        // Check for updates when the plugin is enabled
+        checkForUpdates();
 
         playersFile = new File(getDataFolder(), "data.yml");
         if (!playersFile.exists()) {
@@ -69,12 +76,47 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
         getCommand("njm").setExecutor(new JoinleaveCommand(this));
     }
 
+
     @Override
     public void onDisable() {
         savePlayersConfig();
         closeMySQLConnection();
     }
 
+    private void checkForUpdates() {
+        // Retrieve the latest version of your plugin from your update source
+        String latestVersion = ""; // Replace with your logic to fetch the latest version
+
+        // Retrieve the player's current plugin version
+        String playerVersion = getDescription().getVersion();
+
+        if (playerVersion.equals(latestVersion)) {
+            // Player has the latest version
+            getLogger().info("You are using the latest version of the plugin.");
+        } else {
+            // Player has an outdated version
+            getLogger().warning("An update is available for the plugin!");
+            getLogger().warning("Please update to version " + latestVersion + ".");
+            getLogger().warning("Download the latest version from: " + updateURL);
+            getLogger().warning("Current version: " + playerVersion);
+
+            // Send clickable message to player
+            Player[] onlinePlayers = getServer().getOnlinePlayers().toArray(new Player[0]);
+            for (Player player : onlinePlayers) {
+                if (player.hasPermission("yourplugin.update")) { // Adjust the permission node according to your needs
+                    player.sendMessage(ChatColor.RED + "An update is available for the plugin!");
+                    player.sendMessage(ChatColor.RED + "Please update to version " + latestVersion + ".");
+                    player.sendMessage(ChatColor.RED + "Download the latest version from: " + ChatColor.BLUE + updateURL);
+                }
+            }
+        }
+    }
+
+
+
+    private FileConfiguration getPlayersConfig() {
+        return playersConfig;
+    }
     private void savePlayersConfig() {
         try {
             playersConfig.save(playersFile);
@@ -83,6 +125,22 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
         }
     }
 
+    public boolean hasCustomMessage(Player player) {
+        return getMessage(player, "join", "default-join-message") != null || getMessage(player, "leave", "default-leave-message") != null;
+    }
+
+    public String getLastChange(Player player, String messageType) {
+        FileConfiguration playersConfig = getPlayersConfig();
+
+        String lastChangePath = "players." + player.getUniqueId() + ".last_change." + messageType;
+        if (playersConfig.contains(lastChangePath)) {
+            long lastChangeTimestamp = playersConfig.getLong(lastChangePath);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            return dateFormat.format(new Date(lastChangeTimestamp));
+        }
+
+        return "N/A";
+    }
 
     private boolean setupMySQL() {
         String host = getConfig().getString("mysql.host");
@@ -264,9 +322,17 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
             }
         } else {
             playersConfig.set("players." + player.getUniqueId() + "." + column + "_message", message);
+            updateLastChange(player, column);
             savePlayersConfig();
         }
     }
+
+    private void updateLastChange(Player player, String messageType) {
+        FileConfiguration playersConfig = getPlayersConfig();
+        playersConfig.set("players." + player.getUniqueId() + ".last_change." + messageType, System.currentTimeMillis());
+        savePlayersConfig();
+    }
+
 
     public String getMessage(Player player, String messageType, String defaultMessageType) {
         if (mysqlEnabled) {
