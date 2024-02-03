@@ -13,8 +13,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
+
 import org.bukkit.util.StringUtil;
 
 import java.io.File;
@@ -24,9 +25,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class JoinleaveMessage extends JavaPlugin implements Listener {
 
@@ -35,7 +34,7 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
     private Connection connection;
     private boolean mysqlEnabled;
 
-    private final String pluginVersion = "2.5";
+    private final String pluginVersion = "2.6";
 
     private final String updateURL = "https://www.spigotmc.org/resources/110979/";
 
@@ -85,7 +84,7 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
 
     private void checkForUpdates() {
         // Retrieve the latest version of your plugin from your update source
-        String latestVersion = "2.5";
+        String latestVersion = "2.6";
 
         // Retrieve the player's current plugin version
         String playerVersion = getDescription().getVersion();
@@ -218,8 +217,69 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
 
 
     public void reloadPlugin(CommandSender sender) {
+        // List of config files
+        List<String> configFiles = Arrays.asList("config.yml", "firework.yml", "players.yml", "data.yml");
+
+        for (String configFile : configFiles) {
+            File file = new File(getDataFolder(), configFile);
+
+            if (!file.exists()) {
+                // Config file is missing
+                saveResource(configFile, false);
+
+                if (sender instanceof Player) {
+                    // Sender is a player
+                    Player player = (Player) sender;
+                    player.sendMessage(ChatColor.LIGHT_PURPLE + "Checking " + configFile + "...");
+                    player.sendMessage(ChatColor.DARK_PURPLE + configFile + " not found, created default configuration." + ChatColor.GREEN + " ✔");
+                } else {
+                    // Sender is the console
+                    getLogger().info("Checking " + configFile + "...");
+                    getLogger().info(configFile + " not found, created default configuration.");
+                }
+            }
+        }
+
+        // Reload the main configuration
         reloadConfig();
-        reloadPlayersConfig();
+
+        // Check if MySQL configuration is changed
+        boolean newMySQLStatus = getConfig().getBoolean("mysql.enabled");
+
+        if (newMySQLStatus != mysqlEnabled) {
+            if (newMySQLStatus) {
+                // MySQL is now enabled
+                closeMySQLConnection(); // Close the existing connection if any
+                if (setupMySQL()) {
+                    createTableIfNotExists();
+                    getLogger().info("MySQL has been enabled and connected successfully.");
+                } else {
+                    getLogger().severe("Failed to connect to MySQL. Please check your configuration.");
+                }
+            } else {
+                // MySQL is now disabled
+                closeMySQLConnection();
+                getLogger().info("MySQL has been disabled.");
+            }
+            mysqlEnabled = newMySQLStatus;
+        }
+
+        if (mysqlEnabled && connection == null) {
+            // MySQL was enabled in the config, but connection is null (not established)
+            if (setupMySQL()) {
+                createTableIfNotExists();
+                getLogger().info("MySQL has been enabled and connected successfully.");
+            } else {
+                getLogger().severe("Failed to connect to MySQL. Please check your configuration.");
+            }
+        }
+
+        if (!mysqlEnabled && connection != null) {
+            // MySQL was disabled in the config, but connection is not null (still established)
+            closeMySQLConnection();
+            getLogger().info("System is now on local files");
+        }
+
         if (sender instanceof Player) {
             Player player = (Player) sender;
             player.sendMessage(ChatColor.LIGHT_PURPLE + "Plugin reloaded" + ChatColor.GREEN + " ✔");
@@ -227,23 +287,10 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
             // Handle console reload message
             getLogger().info("Plugin reloaded successfully.");
         }
-
-
-
-        closeMySQLConnection();
-        mysqlEnabled = getConfig().getBoolean("mysql.enabled");
-        if (mysqlEnabled) {
-            if (setupMySQL()) {
-                createTableIfNotExists();
-            } else {
-                getLogger().severe("Failed to connect to MySQL. Please check your configuration.");
-            }
-        }
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            player.sendMessage(ChatColor.DARK_PURPLE + "Mysql has been reloaded" + ChatColor.GREEN + " ✔");
-        }
     }
+
+
+
     public void clearMessage(Player player, String messageType) {
         if (messageType.equals("all")) {
             // Clear all join/leave messages for the player
