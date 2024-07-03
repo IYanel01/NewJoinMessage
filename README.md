@@ -3,7 +3,7 @@ NewJoinMessage is a versatile plugin designed to provide customizable join and l
 
 
 
-![Image Description](https://media.discordapp.net/attachments/571028661944188954/1255232205073022997/Untitled-1.png?ex=667c6196&is=667b1016&hm=7ea0055a5d7996254fa9c604cbf1919927abaa308a9457ef2f9c241b030292c9&=&format=webp&quality=lossless&width=1139&height=2200)
+![Image Description](https://media.discordapp.net/attachments/829132261256462377/1125653380212211742/Untitled-1.png?ex=66862d67&is=6684dbe7&hm=8835f793fd6ea7dec9af6a7aa954031ffe0ae7817524e323dce5a3ff7bacd5ea&=&format=webp&quality=lossless&width=1139&height=2200)
 
 
 
