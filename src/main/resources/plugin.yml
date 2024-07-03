@@ -1,4 +1,4 @@
-name: JoinleaveMessage
+name: NewJoinMessage
 version: '2.7 Beta'
 main: com.joinleave.JoinleaveMessage
 authors: [ Yanel, oled ]

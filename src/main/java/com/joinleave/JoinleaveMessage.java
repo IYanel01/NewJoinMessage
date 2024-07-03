@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.command.ConsoleCommandSender;
 
 import java.util.*;
 
@@ -29,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class JoinleaveMessage extends JavaPlugin implements Listener {
 
     private FileConfiguration playersConfig;
@@ -36,14 +38,48 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
     private Connection connection;
     private boolean mysqlEnabled;
 
-    public final String pluginVersion = "2.7";
-
-    private final String updateURL = "https://www.spigotmc.org/resources/110979/";
-
 
     public void onEnable() {
+        createLanguageFolder();
         saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(this, this);
+
+        Bukkit.getScheduler().runTask(this, () -> {
+            ConsoleCommandSender console = Bukkit.getConsoleSender();
+
+            // Build the message including ASCII art and update status
+            StringBuilder messageBuilder = new StringBuilder();
+            messageBuilder.append(ChatColor.LIGHT_PURPLE + "                           \n");
+            messageBuilder.append(ChatColor.LIGHT_PURPLE + "  _   _                   _       _       __  __                                      \n");
+            messageBuilder.append(ChatColor.LIGHT_PURPLE + " | \\ | |                 | |     (_)     |  \\/  |                                     \n");
+            messageBuilder.append(ChatColor.LIGHT_PURPLE + " |  \\| | _____      __   | | ___  _ _ __ | \\  / | ___  ___ ___  __ _  __ _  ___  ___ \n");
+            messageBuilder.append(ChatColor.LIGHT_PURPLE + " | . ` |/ _ \\ \\ /\\ / /   | |/ _ \\| | '_ \\| |\\/| |/ _ \\/ __/ __|/ _` |/ _` |/ _ \\/ __|\n");
+            messageBuilder.append(ChatColor.LIGHT_PURPLE + " | |\\  |  __/\\ V  V / |__| | (_) | | | | | |  | |  __/\\__ \\__ \\ (_| | (_| |  __/\\__ \\\n");
+            messageBuilder.append(ChatColor.LIGHT_PURPLE + " |_| \\_|\\___| \\_/\\_/ \\____/ \\___/|_|_| |_|_|  |_|\\___||___/___/\\__,_|\\__, |\\___||___/\n");
+            messageBuilder.append(ChatColor.LIGHT_PURPLE + "                                                                      __/ |          \n");
+            messageBuilder.append(ChatColor.LIGHT_PURPLE + "                                                                     |___/           \n");
+            messageBuilder.append("\n");
+
+            // Check for updates
+            UpdateChecker.init(this, 110979).requestUpdateCheck().whenComplete((result, e) -> {
+                if (result.requiresUpdate()) {
+                    String pluginName = "                       [" + getDescription().getName() + "]";
+                    String updateMessage = pluginName + " " + ChatColor.RED + "An update is available! New version: " + result.getNewestVersion();
+                    messageBuilder.append(updateMessage);
+                    console.sendMessage(messageBuilder.toString());
+                    // Perform update handling logic here
+                } else {
+                    String pluginName = "                        " + getDescription().getName() + " ";
+                    String upToDateMessage = pluginName + " " + ChatColor.GREEN + "Plugin is up to date!";
+                    messageBuilder.append(upToDateMessage);
+                    console.sendMessage(messageBuilder.toString());
+                }
+            });
+        });
+
+
+
+
         int pluginId = 18952;
         Metrics Metrics = new Metrics(this, pluginId);
         PlayerWelcome playerWelcome = new PlayerWelcome(this);
@@ -56,7 +92,6 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
         JoinLeaveGUI guiListener = new JoinLeaveGUI(this);
         getServer().getPluginManager().registerEvents(guiListener, this);
         // Check for updates when the plugin is enabled
-        checkForUpdates();
 
         playersFile = new File(getDataFolder(), "data.yml");
         if (!playersFile.exists()) {
@@ -84,36 +119,25 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
         closeMySQLConnection();
     }
 
-    private void checkForUpdates() {
-        // Retrieve the latest version of your plugin from your update source
-        String latestVersion = "2.7";
 
-        // Retrieve the player's current plugin version
-        String playerVersion = getDescription().getVersion();
 
-        if (playerVersion.equals(latestVersion)) {
-            // Player has the latest version
-            getLogger().info("You are using the latest version of the plugin.");
-        } else {
-            // Player has an outdated version
-            getLogger().warning("An update is available for the plugin!");
-            getLogger().warning("Please update to version " + latestVersion + ".");
-            getLogger().warning("Download the latest version from: " + updateURL);
-            getLogger().warning("Current version: " + playerVersion);
+    private void createLanguageFolder() {
+        // Get the plugin's data folder
+        File dataFolder = getDataFolder();
 
-            // Send clickable message to player
-            Player[] onlinePlayers = getServer().getOnlinePlayers().toArray(new Player[0]);
-            for (Player player : onlinePlayers) {
-                if (player.hasPermission("joinleave.update")) { // Adjust the permission node according to your needs
-                    player.sendMessage(ChatColor.RED + "An update is available for the plugin!");
-                    player.sendMessage(ChatColor.RED + "Please update to version " + latestVersion + ".");
-                    player.sendMessage(ChatColor.RED + "Download the latest version from: " + ChatColor.BLUE + updateURL);
-                }
+        // Create a 'Language' directory inside the data folder if it doesn't exist
+        File languageFolder = new File(dataFolder, "Language");
+        if (!languageFolder.exists()) {
+            boolean created = languageFolder.mkdir();
+            if (created) {
+                getLogger().info("Created 'Language' folder successfully.");
+            } else {
+                getLogger().severe("Failed to create 'Language' folder.");
             }
+        } else {
+            getLogger().info("'Language' folder already exists.");
         }
     }
-
-
 
     private FileConfiguration getPlayersConfig() {
         return playersConfig;

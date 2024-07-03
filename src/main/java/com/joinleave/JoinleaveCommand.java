@@ -23,6 +23,7 @@ public class JoinleaveCommand implements CommandExecutor, TabCompleter {
     private final GuiHandler guiHandler;
     private final ClearHandler clearHandler;
     private final ReloadHandler reloadHandler;
+    private final Language language; // Add Language handler
 
     // Constructor
     public JoinleaveCommand(JoinleaveMessage plugin) {
@@ -33,6 +34,7 @@ public class JoinleaveCommand implements CommandExecutor, TabCompleter {
         this.guiHandler = new GuiHandler(plugin);
         this.clearHandler = new ClearHandler(plugin);
         this.reloadHandler = new ReloadHandler(plugin);
+        this.language = new Language(plugin); // Initialize Language handler
     }
 
     @Override
@@ -58,6 +60,16 @@ public class JoinleaveCommand implements CommandExecutor, TabCompleter {
             return guiHandler.handleGuiCommand(sender);
         }
 
+        if (args.length == 1 && args[0].equalsIgnoreCase("language")) {
+            // Handle /njm language command to open Language GUI
+            if (sender instanceof Player) {
+                language.openLanguageGUI((Player) sender);
+            } else {
+                sender.sendMessage(ChatColor.RED + "This command can only be executed by a player.");
+            }
+            return true;
+        }
+
         if (args.length >= 3 && args[0].equalsIgnoreCase("clear")) {
             return clearHandler.handleClearCommand(sender, args);
         }
@@ -80,6 +92,7 @@ public class JoinleaveCommand implements CommandExecutor, TabCompleter {
             subCommands.add("setplayer");
             subCommands.add("set");
             subCommands.add("gui");
+            subCommands.add("language"); // Add 'language' to subCommands
             subCommands.add("clear");
             subCommands.add("reload");
             subCommands.add("info");
@@ -133,6 +146,7 @@ public class JoinleaveCommand implements CommandExecutor, TabCompleter {
         boolean hasClearPlayerPermission = sender.hasPermission("joinleave.clearplayer");
         boolean hasReloadPermission = sender.hasPermission("joinleave.reload");
         boolean hasGuiPermission = sender.hasPermission("joinleave.gui");
+        boolean hasLangPermission = sender.hasPermission("joinleave.Lang");
         boolean hasInfoPermission = sender.hasPermission("joinleave.Info");
         boolean hasAnyPermission = hasSetJoinPermission || hasSetLeavePermission || hasSetPlayerPermission || hasClearPlayerPermission || hasReloadPermission || hasGuiPermission || hasInfoPermission;
         if (!hasAnyPermission) {
@@ -159,6 +173,10 @@ public class JoinleaveCommand implements CommandExecutor, TabCompleter {
             if (hasGuiPermission) {
                 sender.sendMessage(" ");
                 sender.sendMessage(ChatColor.LIGHT_PURPLE + "  /njm gui" + ChatColor.DARK_PURPLE + " - To open the GUI");
+            }
+            if (hasLangPermission) {
+                sender.sendMessage(" ");
+                sender.sendMessage(ChatColor.LIGHT_PURPLE + "  /njm Language" + ChatColor.DARK_PURPLE + " - Set your Language");
             }
             if (hasInfoPermission) {
                 sender.sendMessage(" ");
