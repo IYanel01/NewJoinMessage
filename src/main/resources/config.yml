@@ -1,11 +1,11 @@
 #The NewJoinMessage plugin is a custom plugin designed for Bukkit/Spigot servers. It allows players to set their own join and leave messages, providing a personalized touch to the server experience.
-#1.8 - 1.20 ✔
+#1.8 - 1.20.6 ✔
 
 
 
 about:
   - "NewJoinMessage Plugin"
-  - "Version: 2.5 Beta"
+  - "Version: 2.7 Beta"
   - "Author: [Yanel, oled]"
 
 
@@ -44,7 +44,7 @@ default-leave-message: "&cGoodbye!"
 # Configuration file for New Player Welcome
 
 # Enable/disable the welcome message
-welcome-message-enabled: true
+welcome-message-enabled: false
 
 # Customize the welcome message
 welcome-message: "&e&l[!] &7Welcome %player% to the server! You are the %count% player!"

@@ -4,6 +4,9 @@ import com.joinleave.JoinleaveMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class ReloadHandler {
 
     private final JoinleaveMessage plugin;

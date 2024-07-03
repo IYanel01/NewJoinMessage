@@ -14,7 +14,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.Color;
-import java.util.Arrays;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.Arrays; // Import Arrays from java.util package
 
 public class PlayerWelcome implements Listener {
 
@@ -90,7 +90,7 @@ public class PlayerWelcome implements Listener {
                 if (fireworksFile.createNewFile()) {
                     plugin.getLogger().info("firework.yml created successfully.");
                     fireworksConfig.createSection("fireworks"); // Create the 'fireworks' section
-                    fireworksConfig.set("fireworks.firework-enabled", true); // Add the 'firework-enabled' default value
+                    fireworksConfig.set("fireworks.enabled", true); // Add the 'enabled' default value
                     fireworksConfig.set("fireworks.type", "BALL"); // Add the 'type' default value
                     fireworksConfig.set("fireworks.power", 1); // Add the 'power' default value
                     fireworksConfig.set("fireworks.colors", Arrays.asList("FF0000", "0000FF")); // Add the 'colors' default value
@@ -110,47 +110,48 @@ public class PlayerWelcome implements Listener {
         }
     }
 
-
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         UUID playerId = player.getUniqueId();
 
-        if (!joinedPlayers.contains(playerId)) {
-            joinedPlayers.add(playerId);
+        // Always perform these actions regardless of whether player has joined before
+        boolean welcomeMessageEnabled = plugin.getConfig().getBoolean("welcome-message-enabled", true); // Check if welcome message is enabled
 
-            // Check if the welcome message is enabled in the config
-            boolean welcomeMessageEnabled = playersConfig.getBoolean("welcome-message-enabled", true);
-            if (welcomeMessageEnabled) {
-                int playerCount = playersConfig.getConfigurationSection("players").getKeys(false).size();
-                String welcomeMessage = ChatColor.translateAlternateColorCodes('&',
-                        "&e&l[!] &7Welcome " + ChatColor.YELLOW + player.getName() + ChatColor.GRAY +
-                                " to the server! You are the " + ChatColor.LIGHT_PURPLE + "#" + playerCount + ChatColor.GRAY + " player!");
+        if (welcomeMessageEnabled) {
+            int playerCount = playersConfig.getConfigurationSection("players").getKeys(false).size();
+            String welcomeMessage = ChatColor.translateAlternateColorCodes('&',
+                    "&e&l[!] &7Welcome " + ChatColor.YELLOW + player.getName() + ChatColor.GRAY +
+                            " to the server! You are the " + ChatColor.LIGHT_PURPLE + "#" + playerCount + ChatColor.GRAY + " player!");
 
-                Bukkit.broadcastMessage(welcomeMessage);
+            Bukkit.broadcastMessage(welcomeMessage);
+        }
+
+        playersConfig.set("players." + playerId + ".name", player.getName());
+        savePlayersConfig();
+
+        // Firework display
+        boolean fireworkEnabled = fireworksConfig.getBoolean("fireworks.enabled", true); // Corrected accessing boolean value
+
+        if (fireworkEnabled) {
+            String fireworkTypeString = fireworksConfig.getString("fireworks.type", "BALL");
+            FireworkEffect.Type fireworkType;
+            try {
+                fireworkType = FireworkEffect.Type.valueOf(fireworkTypeString);
+            } catch (IllegalArgumentException e) {
+                plugin.getLogger().warning("Invalid firework type specified in the configuration. Defaulting to BALL.");
+                fireworkType = FireworkEffect.Type.BALL;
             }
+            int fireworkPower = fireworksConfig.getInt("fireworks.power", 1);
 
-            playersConfig.set("players." + playerId + ".name", player.getName());
-            savePlayersConfig();
-
-            // Firework display
-            boolean fireworkEnabled = fireworksConfig.getBoolean("fireworks.enabled", true); // Use 'enabled' instead of 'firework-enabled'
-            if (fireworkEnabled) {
-                String fireworkTypeString = fireworksConfig.getString("fireworks.type", "BALL");
-                FireworkEffect.Type fireworkType;
-                try {
-                    fireworkType = FireworkEffect.Type.valueOf(fireworkTypeString);
-                } catch (IllegalArgumentException e) {
-                    plugin.getLogger().warning("Invalid firework type specified in the configuration. Defaulting to BALL.");
-                    fireworkType = FireworkEffect.Type.BALL;
-                }
-                int fireworkPower = fireworksConfig.getInt("fireworks.power", 1);
-
-                Location location = player.getLocation();
-                launchFirework(location, fireworkType, fireworkPower);
-            }
+            Location location = player.getLocation();
+            launchFirework(location, fireworkType, fireworkPower);
         }
     }
+
+
+
+
 
 
     private void launchFirework(Location location, FireworkEffect.Type type, int power) {

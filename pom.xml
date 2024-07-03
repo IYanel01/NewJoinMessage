@@ -71,10 +71,13 @@
             <version>1.12-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
         <dependency>
-            <groupId>com.gitee.chinasoft_ohos</groupId>
-            <artifactId>Material-ViewPagerIndicator</artifactId>
-            <version>1.0.5</version>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.2.224</version>
+            <scope>test</scope>
         </dependency>
+
     </dependencies>
 </project>

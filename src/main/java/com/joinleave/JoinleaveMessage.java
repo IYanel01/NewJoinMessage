@@ -3,7 +3,7 @@ package com.joinleave;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
-
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -26,6 +26,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.List;
 
 public class JoinleaveMessage extends JavaPlugin implements Listener {
 
@@ -34,7 +36,7 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
     private Connection connection;
     private boolean mysqlEnabled;
 
-    private final String pluginVersion = "2.6";
+    public final String pluginVersion = "2.7";
 
     private final String updateURL = "https://www.spigotmc.org/resources/110979/";
 
@@ -84,7 +86,7 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
 
     private void checkForUpdates() {
         // Retrieve the latest version of your plugin from your update source
-        String latestVersion = "2.6";
+        String latestVersion = "2.7";
 
         // Retrieve the player's current plugin version
         String playerVersion = getDescription().getVersion();
@@ -242,6 +244,20 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
 
         // Reload the main configuration
         reloadConfig();
+
+        // Reload firework.yml specifically
+        File fireworkFile = new File(getDataFolder(), "firework.yml");
+        if (fireworkFile.exists()) {
+            YamlConfiguration fireworkConfig = new YamlConfiguration();
+            try {
+                fireworkConfig.load(fireworkFile);
+                getLogger().info("firework.yml reloaded successfully.");
+            } catch (IOException | InvalidConfigurationException e) {
+                getLogger().severe("Failed to reload firework.yml: " + e.getMessage());
+            }
+        } else {
+            getLogger().warning("firework.yml not found to reload.");
+        }
 
         // Check if MySQL configuration is changed
         boolean newMySQLStatus = getConfig().getBoolean("mysql.enabled");
