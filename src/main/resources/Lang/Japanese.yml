@@ -1,0 +1,6 @@
+join_leave_info:
+  title: "&d%player% の参加/退出メッセージ情報"
+  join_message: "&5参加メッセージ：&r%joinMessage%"
+  leave_message: "&5退出メッセージ：&r%leaveMessage%"
+  last_join_change: "&5最終参加メッセージ変更：&e%lastJoinChange%"
+  last_leave_change: "&5最終退出メッセージ変更：&e%lastLeaveChange%"

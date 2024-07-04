@@ -60,13 +60,9 @@ public class JoinleaveCommand implements CommandExecutor, TabCompleter {
             return guiHandler.handleGuiCommand(sender);
         }
 
-        if (args.length == 1 && args[0].equalsIgnoreCase("language")) {
-            // Handle /njm language command to open Language GUI
-            if (sender instanceof Player) {
-                language.openLanguageGUI((Player) sender);
-            } else {
-                sender.sendMessage(ChatColor.RED + "This command can only be executed by a player.");
-            }
+        if (args[0].equalsIgnoreCase("language") && sender instanceof Player) {
+            Player player = (Player) sender;
+            language.openLanguageGUI(player);
             return true;
         }
 

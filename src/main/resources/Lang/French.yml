@@ -1,0 +1,6 @@
+join_leave_info:
+  title: "&dInformations sur les messages de connexion/déconnexion pour %player%"
+  join_message: "&5Message de connexion : &r%joinMessage%"
+  leave_message: "&5Message de déconnexion : &r%leaveMessage%"
+  last_join_change: "&5Dernière modification du message de connexion : &e%lastJoinChange%"
+  last_leave_change: "&5Dernière modification du message de déconnexion : &e%lastLeaveChange%"

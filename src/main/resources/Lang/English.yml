@@ -1,0 +1,6 @@
+join_leave_info:
+  title: "&dJoin/Leave Message Info for %player%"
+  join_message: "&5Join Message: &r%joinMessage%"
+  leave_message: "&5Leave Message: &r%leaveMessage%"
+  last_join_change: "&5Last Join Message Change: &e%lastJoinChange%"
+  last_leave_change: "&5Last Leave Message Change: &e%lastLeaveChange%"

@@ -37,12 +37,27 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
     private File playersFile;
     private Connection connection;
     private boolean mysqlEnabled;
+    private static JoinleaveMessage instance;
+    private LanguageConfigs languageConfigs;
+    private LanguageManager languageManager;
 
 
     public void onEnable() {
-        createLanguageFolder();
+        instance = this;
         saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(this, this);
+
+        // Initialize LanguageConfigs
+        languageConfigs = new LanguageConfigs(this);
+        languageConfigs.loadConfigs();
+
+        // Initialize LanguageManager
+        File dataLangFile = new File(getDataFolder(), "Lang/DataLang.yml");
+        languageManager = new LanguageManager(dataLangFile);
+
+        // Register events
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(languageManager), this);
+
 
         Bukkit.getScheduler().runTask(this, () -> {
             ConsoleCommandSender console = Bukkit.getConsoleSender();
@@ -119,24 +134,15 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
         closeMySQLConnection();
     }
 
+    // Example method to handle player join event
+    public void onPlayerJoin(Player player) {
+        // Example: Set default language to English for new players
+        String defaultLanguage = "English";
+        languageManager.setPlayerLanguage(player, defaultLanguage);
+    }
 
-
-    private void createLanguageFolder() {
-        // Get the plugin's data folder
-        File dataFolder = getDataFolder();
-
-        // Create a 'Language' directory inside the data folder if it doesn't exist
-        File languageFolder = new File(dataFolder, "Language");
-        if (!languageFolder.exists()) {
-            boolean created = languageFolder.mkdir();
-            if (created) {
-                getLogger().info("Created 'Language' folder successfully.");
-            } else {
-                getLogger().severe("Failed to create 'Language' folder.");
-            }
-        } else {
-            getLogger().info("'Language' folder already exists.");
-        }
+    public static JoinleaveMessage getInstance() {
+        return instance;
     }
 
     private FileConfiguration getPlayersConfig() {

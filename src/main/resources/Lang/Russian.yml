@@ -1,0 +1,6 @@
+join_leave_info:
+  title: "&dИнформация о сообщениях о входе/выходе для %player%"
+  join_message: "&5Сообщение о входе: &r%joinMessage%"
+  leave_message: "&5Сообщение о выходе: &r%leaveMessage%"
+  last_join_change: "&5Последнее изменение сообщения о входе: &e%lastJoinChange%"
+  last_leave_change: "&5Последнее изменение сообщения о выходе: &e%lastLeaveChange%"

@@ -1,0 +1,6 @@
+join_leave_info:
+  title: "&d%player%의 입/퇴장 메시지 정보"
+  join_message: "&5입장 메시지: &r%joinMessage%"
+  leave_message: "&5퇴장 메시지: &r%leaveMessage%"
+  last_join_change: "&5최근 입장 메시지 변경: &e%lastJoinChange%"
+  last_leave_change: "&5최근 퇴장 메시지 변경: &e%lastLeaveChange%"

@@ -1,0 +1,6 @@
+join_leave_info:
+  title: "&dInformación de mensajes de entrada/salida para %player%"
+  join_message: "&5Mensaje de entrada: &r%joinMessage%"
+  leave_message: "&5Mensaje de salida: &r%leaveMessage%"
+  last_join_change: "&5Último cambio en el mensaje de entrada: &e%lastJoinChange%"
+  last_leave_change: "&5Último cambio en el mensaje de salida: &e%lastLeaveChange%"

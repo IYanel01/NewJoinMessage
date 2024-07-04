@@ -1,0 +1,6 @@
+join_leave_info:
+  title: "&dBeitritts-/Austrittsnachrichten für %player%"
+  join_message: "&5Beitrittsnachricht: &r%joinMessage%"
+  leave_message: "&5Austrittsnachricht: &r%leaveMessage%"
+  last_join_change: "&5Letzte Änderung der Beitrittsnachricht: &r%lastJoinChange%"
+  last_leave_change: "&5Letzte Änderung der Austrittsnachricht: &r%lastLeaveChange%"

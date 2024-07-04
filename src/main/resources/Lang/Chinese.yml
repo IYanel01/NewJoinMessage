@@ -1,0 +1,6 @@
+join_leave_info:
+  title: "&d玩家 %player% 进出信息"
+  join_message: "&5进入消息：&r%joinMessage%"
+  leave_message: "&5离开消息：&r%leaveMessage%"
+  last_join_change: "&5上次进入消息更改：&e%lastJoinChange%"
+  last_leave_change: "&5上次离开消息更改：&e%lastLeaveChange%"

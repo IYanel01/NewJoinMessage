@@ -1,6 +1,7 @@
 package com.joinleave.Handler;
 
 import com.joinleave.JoinleaveMessage;
+import com.joinleave.LangMessageChanger;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -8,10 +9,12 @@ import org.bukkit.entity.Player;
 public class MessageHandler {
 
     private final JoinleaveMessage plugin;
+    private final LangMessageChanger langMessageChanger;
 
     // Constructor
     public MessageHandler(JoinleaveMessage plugin) {
         this.plugin = plugin;
+        this.langMessageChanger = new LangMessageChanger(plugin);
     }
 
     public boolean handleInfoCommand(CommandSender sender, String[] args) {
@@ -29,11 +32,8 @@ public class MessageHandler {
             String lastJoinChange = plugin.getLastChange(targetPlayer, "join");
             String lastLeaveChange = plugin.getLastChange(targetPlayer, "leave");
 
-            sender.sendMessage(ChatColor.LIGHT_PURPLE + "Join/Leave Message Info for " + targetPlayer.getName());
-            sender.sendMessage(ChatColor.DARK_PURPLE + "Join Message: " + ChatColor.RESET + (joinMessage.equals(plugin.getConfig().getString("default-join-message")) ? ChatColor.GREEN + "Default Message" : joinMessage));
-            sender.sendMessage(ChatColor.DARK_PURPLE + "Leave Message: " + ChatColor.RESET + (leaveMessage.equals(plugin.getConfig().getString("default-leave-message")) ? ChatColor.GREEN + "Default Message" : leaveMessage));
-            sender.sendMessage(ChatColor.DARK_PURPLE + "Last Join Message Change: " + ChatColor.RESET + lastJoinChange);
-            sender.sendMessage(ChatColor.DARK_PURPLE + "Last Leave Message Change: " + ChatColor.RESET + lastLeaveChange);
+            // Send join/leave info using LangMessageChanger
+            langMessageChanger.sendJoinLeaveInfo(sender, targetPlayer.getName(), joinMessage, leaveMessage, lastJoinChange, lastLeaveChange);
 
             return true;
         }
