@@ -4,3 +4,30 @@ join_leave_info:
   leave_message: "&5Message de déconnexion : &r%leaveMessage%"
   last_join_change: "&5Dernière modification du message de connexion : &e%lastJoinChange%"
   last_leave_change: "&5Dernière modification du message de déconnexion : &e%lastLeaveChange%"
+
+
+
+
+no_permission: "&cVous n'avez pas la permission de définir les messages %type%."
+set_success: "&aVotre message %type% a été défini avec succès."
+invalid_type: "&cType de message invalide. Utilisez 'join' ou 'leave'."
+console_error: "&cCette commande ne peut être exécutée que par un joueur."
+
+
+
+
+
+clear_no_permission: "&cVous n'avez pas la permission d'effacer les messages %type% pour d'autres joueurs."
+clear_player_not_found: "&cJoueur introuvable."
+clear_success: "&aMessage %type% effacé avec succès pour le joueur %player%."
+clear_reset_success: "&aLe joueur %player% a été réinitialisé aux messages par défaut."
+clear_invalid_type: "&cType de message invalide. Utilisez 'all', 'join' ou 'leave'."
+clear_console_error: "&cCette commande ne peut être exécutée que par un joueur."
+
+
+
+
+setplayer_no_permission: "&cVous n'avez pas la permission de définir les messages de connexion/déconnexion pour d'autres joueurs."
+setplayer_player_not_found: "&cJoueur introuvable."
+setplayer_success: "&aMessage de %type% pour le joueur %player% défini avec succès."
+setplayer_invalid_type: "&cType de message invalide. Utilisez 'join' ou 'leave'."

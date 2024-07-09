@@ -4,3 +4,33 @@ join_leave_info:
   leave_message: "&5离开消息：&r%leaveMessage%"
   last_join_change: "&5上次进入消息更改：&e%lastJoinChange%"
   last_leave_change: "&5上次离开消息更改：&e%lastLeaveChange%"
+
+
+
+no_permission: "&c你没有权限设置 %type% 消息。"
+set_success: "&a成功设置你的 %type% 消息。"
+invalid_type: "&c无效的消息类型。使用 'join' 或 'leave'。"
+console_error: "&c此命令只能由玩家执行。"
+
+
+
+
+
+
+
+clear_no_permission: "&c您没有权限清除其他玩家的 %type% 消息。"
+clear_player_not_found: "&c未找到玩家。"
+clear_success: "&a成功清除了玩家 %player% 的 %type% 消息。"
+clear_reset_success: "&a玩家 %player% 已恢复到默认消息。"
+clear_invalid_type: "&c无效的消息类型。请使用 'all'、'join' 或 'leave'。"
+clear_console_error: "&c此命令只能由玩家执行。"
+
+
+
+
+
+
+setplayer_no_permission: "&c您没有权限为其他玩家设置加入/离开消息。"
+setplayer_player_not_found: "&c未找到玩家。"
+setplayer_success: "&a成功为玩家 %player% 设置 %type% 消息。"
+setplayer_invalid_type: "&c无效的消息类型。使用 'join' 或 'leave'。"

@@ -4,3 +4,35 @@ join_leave_info:
   leave_message: "&5Сообщение о выходе: &r%leaveMessage%"
   last_join_change: "&5Последнее изменение сообщения о входе: &e%lastJoinChange%"
   last_leave_change: "&5Последнее изменение сообщения о выходе: &e%lastLeaveChange%"
+
+
+
+
+no_permission: "&cУ вас нет разрешения на установку сообщений %type%."
+set_success: "&aВаше сообщение %type% успешно установлено."
+invalid_type: "&cНеверный тип сообщения. Используйте 'join' или 'leave'."
+console_error: "&cЭта команда может быть выполнена только игроком."
+
+
+
+
+
+
+
+clear_no_permission: "&cУ вас нет прав на очистку сообщений %type% для других игроков."
+clear_player_not_found: "&cИгрок не найден."
+clear_success: "&aСообщение %type% для игрока %player% успешно очищено."
+clear_reset_success: "&aИгрок %player% был сброшен к стандартным сообщениям."
+clear_invalid_type: "&cНедопустимый тип сообщения. Используйте 'all', 'join' или 'leave'."
+clear_console_error: "&cЭту команду может выполнить только игрок."
+
+
+
+
+
+
+
+setplayer_no_permission: "&cУ вас нет прав на установку сообщений о входе/выходе для других игроков."
+setplayer_player_not_found: "&cИгрок не найден."
+setplayer_success: "&aСообщение %type% для игрока %player% успешно установлено."
+setplayer_invalid_type: "&cНедопустимый тип сообщения. Используйте 'join' или 'leave'."

@@ -4,3 +4,30 @@ join_leave_info:
   leave_message: "&5退出メッセージ：&r%leaveMessage%"
   last_join_change: "&5最終参加メッセージ変更：&e%lastJoinChange%"
   last_leave_change: "&5最終退出メッセージ変更：&e%lastLeaveChange%"
+
+
+
+no_permission: "&c%type% メッセージを設定する権限がありません。"
+set_success: "&a%type% メッセージを正常に設定しました。"
+invalid_type: "&c無効なメッセージタイプです。「join」または「leave」を使用してください。"
+console_error: "&cこのコマンドはプレイヤーのみ実行できます。"
+
+
+
+
+
+
+clear_no_permission: "&c他のプレイヤーの %type% メッセージをクリアする権限がありません。"
+clear_player_not_found: "&cプレイヤーが見つかりません。"
+clear_success: "&aプレイヤー %player% の %type% メッセージを正常にクリアしました。"
+clear_reset_success: "&aプレイヤー %player% はデフォルトメッセージにリセットされました。"
+clear_invalid_type: "&c無効なメッセージタイプです。「all」、「join」または「leave」を使用してください。"
+clear_console_error: "&cこのコマンドはプレイヤーのみが実行できます。"
+
+
+
+
+setplayer_no_permission: "&c他のプレイヤーの参加/退出メッセージを設定する権限がありません。"
+setplayer_player_not_found: "&cプレイヤーが見つかりません。"
+setplayer_success: "&aプレイヤー %player% の %type% メッセージを正常に設定しました。"
+setplayer_invalid_type: "&c無効なメッセージタイプです。 'join' または 'leave' を使用してください。"

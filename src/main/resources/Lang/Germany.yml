@@ -4,3 +4,32 @@ join_leave_info:
   leave_message: "&5Austrittsnachricht: &r%leaveMessage%"
   last_join_change: "&5Letzte Änderung der Beitrittsnachricht: &r%lastJoinChange%"
   last_leave_change: "&5Letzte Änderung der Austrittsnachricht: &r%lastLeaveChange%"
+
+
+# Germany.yml
+no_permission: "&cDu hast keine Berechtigung, die %type%-Nachrichten festzulegen."
+set_success: "&aDeine %type%-Nachricht wurde erfolgreich festgelegt."
+invalid_type: "&cUngültiger Nachrichtentyp. Verwende 'join' oder 'leave'."
+console_error: "&cDieser Befehl kann nur von einem Spieler ausgeführt werden."
+
+
+
+
+
+
+# ClearHandler messages
+clear_no_permission: "&cDu hast keine Berechtigung, %type%-Nachrichten für andere Spieler zu löschen."
+clear_player_not_found: "&cSpieler nicht gefunden."
+clear_success: "&aDie %type%-Nachricht für Spieler %player% wurde erfolgreich gelöscht."
+clear_reset_success: "&aSpieler %player% wurde auf Standardnachrichten zurückgesetzt."
+clear_invalid_type: "&cUngültiger Nachrichtentyp. Verwende 'all', 'join' oder 'leave'."
+clear_console_error: "&cDieser Befehl kann nur von einem Spieler ausgeführt werden."
+
+
+
+
+
+setplayer_no_permission: "&cDu hast keine Berechtigung, die Join/Leave-Nachrichten für andere Spieler festzulegen."
+setplayer_player_not_found: "&cSpieler nicht gefunden."
+setplayer_success: "&aErfolgreich die %type%-Nachricht für Spieler %player% festgelegt."
+setplayer_invalid_type: "&cUngültiger Nachrichtentyp. Verwende 'join' oder 'leave'."

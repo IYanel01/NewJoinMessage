@@ -1,6 +1,32 @@
+#English.yml
+
+# InfoHandler
 join_leave_info:
   title: "&dJoin/Leave Message Info for %player%"
   join_message: "&5Join Message: &r%joinMessage%"
   leave_message: "&5Leave Message: &r%leaveMessage%"
   last_join_change: "&5Last Join Message Change: &e%lastJoinChange%"
   last_leave_change: "&5Last Leave Message Change: &e%lastLeaveChange%"
+
+# SetHandler messages
+no_permission: "&cYou don't have permission to set %type% messages."
+set_success: "&aSuccessfully set your %type% message."
+invalid_type: "&cInvalid message type. Use 'join' or 'leave'."
+console_error: "&cThis command can only be executed by a player."
+
+
+# ClearHandler messages
+clear_no_permission: "&cYou don't have permission to clear %type% messages for other players."
+clear_player_not_found: "&cPlayer not found."
+clear_success: "&aSuccessfully cleared the %type% message for player %player%."
+clear_reset_success: "&aPlayer %player% has been reset to default messages."
+clear_invalid_type: "&cInvalid message type. Use 'all', 'join', or 'leave'."
+clear_console_error: "&cThis command can only be executed by a player."
+
+
+
+
+setplayer_no_permission: "&cYou don't have permission to set join/leave messages for other players."
+setplayer_player_not_found: "&cPlayer not found."
+setplayer_success: "&aSuccessfully set the %type% message for player %player%."
+setplayer_invalid_type: "&cInvalid message type. Use 'join' or 'leave'."

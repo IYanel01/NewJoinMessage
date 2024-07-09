@@ -29,10 +29,10 @@ public class JoinleaveCommand implements CommandExecutor, TabCompleter {
     public JoinleaveCommand(JoinleaveMessage plugin) {
         this.plugin = plugin;
         this.messageHandler = new MessageHandler(plugin);
-        this.setPlayerHandler = new SetPlayerHandler(plugin);
+        this.setPlayerHandler = new SetPlayerHandler(plugin, new LanguageHandler(plugin));
         this.setHandler = new SetHandler(plugin);
         this.guiHandler = new GuiHandler(plugin);
-        this.clearHandler = new ClearHandler(plugin);
+        this.clearHandler = new ClearHandler(plugin, new LanguageHandler(plugin)); // Initialize with LanguageHandler
         this.reloadHandler = new ReloadHandler(plugin);
         this.language = new Language(plugin); // Initialize Language handler
     }

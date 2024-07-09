@@ -4,3 +4,32 @@ join_leave_info:
   leave_message: "&5Mensaje de salida: &r%leaveMessage%"
   last_join_change: "&5Último cambio en el mensaje de entrada: &e%lastJoinChange%"
   last_leave_change: "&5Último cambio en el mensaje de salida: &e%lastLeaveChange%"
+
+
+
+
+no_permission: "&cNo tienes permiso para establecer mensajes %type%."
+set_success: "&aTu mensaje %type% se ha establecido con éxito."
+invalid_type: "&cTipo de mensaje inválido. Usa 'join' o 'leave'."
+console_error: "&cEste comando solo puede ser ejecutado por un jugador."
+
+
+
+
+
+
+clear_no_permission: "&cNo tienes permiso para borrar los mensajes %type% de otros jugadores."
+clear_player_not_found: "&cJugador no encontrado."
+clear_success: "&aMensaje %type% borrado con éxito para el jugador %player%."
+clear_reset_success: "&aEl jugador %player% ha sido restablecido a los mensajes predeterminados."
+clear_invalid_type: "&cTipo de mensaje inválido. Usa 'all', 'join' o 'leave'."
+clear_console_error: "&cEste comando solo puede ser ejecutado por un jugador."
+
+
+
+
+
+setplayer_no_permission: "&cNo tienes permiso para establecer mensajes de unión/salida para otros jugadores."
+setplayer_player_not_found: "&cJugador no encontrado."
+setplayer_success: "&aMensaje de %type% para el jugador %player% establecido con éxito."
+setplayer_invalid_type: "&cTipo de mensaje no válido. Usa 'join' o 'leave'."
