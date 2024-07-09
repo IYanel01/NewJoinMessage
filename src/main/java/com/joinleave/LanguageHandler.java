@@ -35,7 +35,6 @@ public class LanguageHandler {
         }
         YamlConfiguration langConfig = YamlConfiguration.loadConfiguration(langFile);
         languageFiles.put(language.toLowerCase(), langConfig);
-        plugin.getLogger().info("Loaded language file: " + language.toLowerCase() + ".yml");
     }
 
     public String getMessage(Player player, String key) {
@@ -66,9 +65,6 @@ public class LanguageHandler {
         String playerUUID = player.getUniqueId().toString();
         String language = dataLangConfig.getString(playerUUID + ".Language", "english").toLowerCase();
 
-        // Debugging output
-        plugin.getLogger().info("Player UUID: " + playerUUID);
-        plugin.getLogger().info("Selected Language: " + language);
 
         // Check if the loaded language file exists in our set of language files
         if (!languageFiles.containsKey(language)) {

@@ -23,6 +23,7 @@ public class JoinleaveCommand implements CommandExecutor, TabCompleter {
     private final GuiHandler guiHandler;
     private final ClearHandler clearHandler;
     private final ReloadHandler reloadHandler;
+    private final LanguageHandler languageHandler; // Use LanguageHandler
     private final Language language; // Add Language handler
 
     // Constructor
@@ -34,8 +35,10 @@ public class JoinleaveCommand implements CommandExecutor, TabCompleter {
         this.guiHandler = new GuiHandler(plugin);
         this.clearHandler = new ClearHandler(plugin, new LanguageHandler(plugin)); // Initialize with LanguageHandler
         this.reloadHandler = new ReloadHandler(plugin);
+        this.languageHandler = new LanguageHandler(plugin); // Initialize LanguageHandler
         this.language = new Language(plugin); // Initialize Language handler
     }
+
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -55,15 +58,13 @@ public class JoinleaveCommand implements CommandExecutor, TabCompleter {
         if (args.length >= 3 && args[0].equalsIgnoreCase("set")) {
             return setHandler.handleSetCommand(sender, args);
         }
-
-        if (args.length == 1 && args[0].equalsIgnoreCase("gui")) {
-            return guiHandler.handleGuiCommand(sender);
-        }
-
         if (args[0].equalsIgnoreCase("language") && sender instanceof Player) {
             Player player = (Player) sender;
             language.openLanguageGUI(player);
             return true;
+        }
+        if (args.length == 1 && args[0].equalsIgnoreCase("gui")) {
+            return guiHandler.handleGuiCommand(sender);
         }
 
         if (args.length >= 3 && args[0].equalsIgnoreCase("clear")) {
@@ -128,13 +129,15 @@ public class JoinleaveCommand implements CommandExecutor, TabCompleter {
     }
 
     private void displayHelpMenu(CommandSender sender) {
+        Player player = (sender instanceof Player) ? (Player) sender : null;
+
         sender.sendMessage(ChatColor.LIGHT_PURPLE + "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
         sender.sendMessage("");
-        sender.sendMessage(ChatColor.DARK_PURPLE + "         NewJoinMessage Help");
+        sender.sendMessage(ChatColor.DARK_PURPLE + "                NewJoinMessage Help");
         sender.sendMessage("");
-        sender.sendMessage(ChatColor.GRAY + "    JoinMessage version: " + ChatColor.GREEN + "2.7 Beta" + ChatColor.GREEN + " ✔");
+        sender.sendMessage(ChatColor.GRAY + "      JoinMessage version: " + ChatColor.GREEN + "2.8 Beta" + ChatColor.GREEN + " ✔");
         sender.sendMessage("");
-        sender.sendMessage(ChatColor.GRAY + "    Made With " + ChatColor.RED + "❤" + ChatColor.GRAY + " by Yanel");
+        sender.sendMessage(ChatColor.GRAY + "      Made With " + ChatColor.RED + "❤" + ChatColor.GRAY + " by Yanel");
 
         boolean hasSetJoinPermission = sender.hasPermission("joinleave.set.join");
         boolean hasSetLeavePermission = sender.hasPermission("joinleave.set.leave");
@@ -142,56 +145,54 @@ public class JoinleaveCommand implements CommandExecutor, TabCompleter {
         boolean hasClearPlayerPermission = sender.hasPermission("joinleave.clearplayer");
         boolean hasReloadPermission = sender.hasPermission("joinleave.reload");
         boolean hasGuiPermission = sender.hasPermission("joinleave.gui");
-        boolean hasLangPermission = sender.hasPermission("joinleave.Lang");
-        boolean hasInfoPermission = sender.hasPermission("joinleave.Info");
+        boolean hasInfoPermission = sender.hasPermission("joinleave.info");
         boolean hasAnyPermission = hasSetJoinPermission || hasSetLeavePermission || hasSetPlayerPermission || hasClearPlayerPermission || hasReloadPermission || hasGuiPermission || hasInfoPermission;
+
         if (!hasAnyPermission) {
             sender.sendMessage(" ");
-            sender.sendMessage(ChatColor.RED + "Sorry, it seems that you don't have any permissions. Please contact an administrator or obtain a rank to get permissions.");
+            sender.sendMessage(ChatColor.RED + languageHandler.getMessage(player, "help.noPermissions"));
+
+            sender.sendMessage(" ");
+            sender.sendMessage(ChatColor.LIGHT_PURPLE + languageHandler.getMessage(player, "help.setLanguage"));
+
             sender.sendMessage(" ");
         } else {
             if (hasSetJoinPermission) {
                 sender.sendMessage(" ");
-                sender.sendMessage(ChatColor.LIGHT_PURPLE + "  /njm set join <message>" + ChatColor.DARK_PURPLE + " - Set your join message");
+                sender.sendMessage(ChatColor.LIGHT_PURPLE + languageHandler.getMessage(player, "help.setJoinMessage"));
             }
             if (hasSetLeavePermission) {
                 sender.sendMessage(" ");
-                sender.sendMessage(ChatColor.LIGHT_PURPLE + "  /njm set leave <message>" + ChatColor.DARK_PURPLE + " - Set your leave message");
+                sender.sendMessage(ChatColor.LIGHT_PURPLE + languageHandler.getMessage(player, "help.setLeaveMessage"));
             }
             if (hasSetPlayerPermission) {
                 sender.sendMessage(" ");
-                sender.sendMessage(ChatColor.LIGHT_PURPLE + "  /njm setplayer <player> join/leave <message>" + ChatColor.DARK_PURPLE + " - Set another player's join message");
+                sender.sendMessage(ChatColor.LIGHT_PURPLE + languageHandler.getMessage(player, "help.setPlayerMessage"));
             }
             if (hasClearPlayerPermission) {
                 sender.sendMessage(" ");
-                sender.sendMessage(ChatColor.LIGHT_PURPLE + "  /njm clear all/join/leave [player]" + ChatColor.DARK_PURPLE + " - To clear the join/leave message for players");
+                sender.sendMessage(ChatColor.LIGHT_PURPLE + languageHandler.getMessage(player, "help.clearMessages"));
             }
             if (hasGuiPermission) {
                 sender.sendMessage(" ");
-                sender.sendMessage(ChatColor.LIGHT_PURPLE + "  /njm gui" + ChatColor.DARK_PURPLE + " - To open the GUI");
-            }
-            if (hasLangPermission) {
-                sender.sendMessage(" ");
-                sender.sendMessage(ChatColor.LIGHT_PURPLE + "  /njm Language" + ChatColor.DARK_PURPLE + " - Set your Language");
+                sender.sendMessage(ChatColor.LIGHT_PURPLE + languageHandler.getMessage(player, "help.openGui"));
             }
             if (hasInfoPermission) {
                 sender.sendMessage(" ");
-                sender.sendMessage(ChatColor.LIGHT_PURPLE + "  /njm Info [Player]" + ChatColor.DARK_PURPLE + " - To See Another players Info");
+                sender.sendMessage(ChatColor.LIGHT_PURPLE + languageHandler.getMessage(player, "help.viewInfo"));
             }
             if (hasReloadPermission) {
                 sender.sendMessage(" ");
-                sender.sendMessage(ChatColor.LIGHT_PURPLE + "  /njm reload" + ChatColor.DARK_PURPLE + " - Reload the plugin");
-
+                sender.sendMessage(ChatColor.LIGHT_PURPLE + languageHandler.getMessage(player, "help.reloadPlugin"));
             }
         }
 
-        Player player = (sender instanceof Player) ? (Player) sender : null;
         if (player != null) {
             String joinMessage = plugin.getMessage(player, "join", "default-join-message");
             String leaveMessage = plugin.getMessage(player, "leave", "default-leave-message");
             sender.sendMessage(" ");
-            sender.sendMessage(ChatColor.GREEN + "Your current Join Message: " + ChatColor.RESET + (joinMessage.equals(plugin.getConfig().getString("default-join-message")) ? ChatColor.GRAY + "Using the default message" : joinMessage));
-            sender.sendMessage(ChatColor.GREEN + "Your current Leave Message: " + ChatColor.RESET + (leaveMessage.equals(plugin.getConfig().getString("default-leave-message")) ? ChatColor.GRAY + "Using the default message" : leaveMessage));
+            sender.sendMessage(ChatColor.GREEN + languageHandler.getMessage(player, "help.currentJoinMessage") + ChatColor.RESET + (joinMessage.equals(plugin.getConfig().getString("default-join-message")) ? ChatColor.GRAY + languageHandler.getMessage(player, "help.usingDefaultMessage") : joinMessage));
+            sender.sendMessage(ChatColor.GREEN + languageHandler.getMessage(player, "help.currentLeaveMessage") + ChatColor.RESET + (leaveMessage.equals(plugin.getConfig().getString("default-leave-message")) ? ChatColor.GRAY + languageHandler.getMessage(player, "help.usingDefaultMessage") : leaveMessage));
         }
 
         sender.sendMessage(ChatColor.LIGHT_PURPLE + "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");

@@ -31,3 +31,38 @@ setplayer_no_permission: "&c他のプレイヤーの参加/退出メッセージ
 setplayer_player_not_found: "&cプレイヤーが見つかりません。"
 setplayer_success: "&aプレイヤー %player% の %type% メッセージを正常に設定しました。"
 setplayer_invalid_type: "&c無効なメッセージタイプです。 'join' または 'leave' を使用してください。"
+
+
+
+
+
+
+# General messages
+plugin-reloaded: "&aプラグインが正常にリロードされました。"
+
+# Command usage messages
+command-usage:
+  setplayer: "&6使用法: &e/njm setplayer <プレイヤー> join/leave <メッセージ>"
+  set: "&6使用法: &e/njm set join/leave <メッセージ>"
+  clear: "&6使用法: &e/njm clear all/join/leave [プレイヤー]"
+  info: "&6使用法: &e/njm info [プレイヤー]"
+  reload: "&6使用法: &e/njm reload"
+  gui: "&6使用法: &e/njm gui"
+  language: "&6使用法: &e/njm language - あなたの言語を設定します"
+
+# Help menu
+help:
+  title: "&d━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  noPermissions: "&c申し訳ありませんが、この操作には権限が必要です。管理者に連絡するか、権限を取得してください。"
+  languageCommand: "&d  /njm language&5 - あなたの言語を設定します"
+  setJoinMessage: "&d  /njm set join <メッセージ>&5 - 入室メッセージを設定します"
+  setLeaveMessage: "&d  /njm set leave <メッセージ>&5 - 退出メッセージを設定します"
+  setPlayerMessage: "&d  /njm setplayer <プレイヤー> join/leave <メッセージ>&5 - 他のプレイヤーの入室/退出メッセージを設定します"
+  clearMessages: "&d  /njm clear all/join/leave [プレイヤー]&5 - プレイヤーの入室/退出メッセージをクリアします"
+  openGui: "&d  /njm gui&5 - GUIを開きます"
+  viewInfo: "&d  /njm info [プレイヤー]&5 - 他のプレイヤーの情報を表示します"
+  reloadPlugin: "&d  /njm reload&5 - プラグインをリロードします"
+  currentJoinMessage: "&a現在の入室メッセージ: "
+  currentLeaveMessage: "&a現在の退出メッセージ: "
+  usingDefaultMessage: "&7デフォルトメッセージを使用しています"
+  footer: "&d━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

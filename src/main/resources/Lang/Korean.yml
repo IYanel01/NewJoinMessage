@@ -36,3 +36,38 @@ setplayer_no_permission: "&c다른 플레이어의 참가/퇴장 메시지를 �
 setplayer_player_not_found: "&c플레이어를 찾을 수 없습니다."
 setplayer_success: "&a플레이어 %player% 의 %type% 메시지를 성공적으로 설정했습니다."
 setplayer_invalid_type: "&c잘못된 메시지 유형입니다. 'join' 또는 'leave'를 사용하세요."
+
+
+
+
+
+
+# General messages
+plugin-reloaded: "&a플러그인이 성공적으로 다시로드되었습니다."
+
+# Command usage messages
+command-usage:
+  setplayer: "&6사용법: &e/njm setplayer <플레이어> join/leave <메시지>"
+  set: "&6사용법: &e/njm set join/leave <메시지>"
+  clear: "&6사용법: &e/njm clear all/join/leave [플레이어]"
+  info: "&6사용법: &e/njm info [플레이어]"
+  reload: "&6사용법: &e/njm reload"
+  gui: "&6사용법: &e/njm gui"
+  language: "&6사용법: &e/njm language - 당신의 언어 설정"
+
+# Help menu
+help:
+  title: "&d━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  noPermissions: "&c죄송합니다, 권한이 없는 것 같습니다. 관리자에게 문의하거나 권한을 얻으세요."
+  languageCommand: "&d  /njm language&5 - 당신의 언어 설정"
+  setJoinMessage: "&d  /njm set join <메시지>&5 - 당신의 입장 메시지 설정"
+  setLeaveMessage: "&d  /njm set leave <메시지>&5 - 당신의 퇴장 메시지 설정"
+  setPlayerMessage: "&d  /njm setplayer <플레이어> join/leave <메시지>&5 - 다른 플레이어의 입장/퇴장 메시지 설정"
+  clearMessages: "&d  /njm clear all/join/leave [플레이어]&5 - 플레이어의 입장/퇴장 메시지 삭제"
+  openGui: "&d  /njm gui&5 - GUI 열기"
+  viewInfo: "&d  /njm info [플레이어]&5 - 다른 플레이어 정보 보기"
+  reloadPlugin: "&d  /njm reload&5 - 플러그인 다시로드"
+  currentJoinMessage: "&a현재 입장 메시지: "
+  currentLeaveMessage: "&a현재 퇴장 메시지: "
+  usingDefaultMessage: "&7기본 메시지 사용 중"
+  footer: "&d━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

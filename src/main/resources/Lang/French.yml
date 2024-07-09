@@ -31,3 +31,37 @@ setplayer_no_permission: "&cVous n'avez pas la permission de définir les messag
 setplayer_player_not_found: "&cJoueur introuvable."
 setplayer_success: "&aMessage de %type% pour le joueur %player% défini avec succès."
 setplayer_invalid_type: "&cType de message invalide. Utilisez 'join' ou 'leave'."
+
+
+
+
+
+# General messages
+plugin-reloaded: "&aPlugin rechargé avec succès."
+
+# Command usage messages
+command-usage:
+  setplayer: "&6Utilisation: &e/njm setplayer <joueur> join/leave <message>"
+  set: "&6Utilisation: &e/njm set join/leave <message>"
+  clear: "&6Utilisation: &e/njm clear all/join/leave [joueur]"
+  info: "&6Utilisation: &e/njm info [joueur]"
+  reload: "&6Utilisation: &e/njm reload"
+  gui: "&6Utilisation: &e/njm gui"
+  language: "&6Utilisation: &e/njm language - Définir votre langue"
+
+# Help menu
+help:
+  title: "&d━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  noPermissions: "&cDésolé, il semble que vous n'ayez pas les permissions. Veuillez contacter un administrateur ou obtenir un rang pour obtenir les permissions."
+  languageCommand: "&d  /njm language&5 - Définir votre langue"
+  setJoinMessage: "&d  /njm set join <message>&5 - Définir votre message de bienvenue"
+  setLeaveMessage: "&d  /njm set leave <message>&5 - Définir votre message de départ"
+  setPlayerMessage: "&d  /njm setplayer <joueur> join/leave <message>&5 - Définir le message de bienvenue d'un autre joueur"
+  clearMessages: "&d  /njm clear all/join/leave [joueur]&5 - Pour effacer les messages de bienvenue/de départ des joueurs"
+  openGui: "&d  /njm gui&5 - Pour ouvrir l'interface graphique"
+  viewInfo: "&d  /njm info [joueur]&5 - Pour voir les informations d'un autre joueur"
+  reloadPlugin: "&d  /njm reload&5 - Recharger le plugin"
+  currentJoinMessage: "&aVotre message de bienvenue actuel: "
+  currentLeaveMessage: "&aVotre message de départ actuel: "
+  usingDefaultMessage: "&7Utilise le message par défaut"
+  footer: "&d━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

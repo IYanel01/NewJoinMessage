@@ -33,3 +33,38 @@ setplayer_no_permission: "&cNo tienes permiso para establecer mensajes de unión
 setplayer_player_not_found: "&cJugador no encontrado."
 setplayer_success: "&aMensaje de %type% para el jugador %player% establecido con éxito."
 setplayer_invalid_type: "&cTipo de mensaje no válido. Usa 'join' o 'leave'."
+
+
+
+
+
+
+# General messages
+plugin-reloaded: "&aPlugin recargado con éxito."
+
+# Command usage messages
+command-usage:
+  setplayer: "&6Uso: &e/njm setplayer <jugador> join/leave <mensaje>"
+  set: "&6Uso: &e/njm set join/leave <mensaje>"
+  clear: "&6Uso: &e/njm clear all/join/leave [jugador]"
+  info: "&6Uso: &e/njm info [jugador]"
+  reload: "&6Uso: &e/njm reload"
+  gui: "&6Uso: &e/njm gui"
+  language: "&6Uso: &e/njm language - Establece tu idioma"
+
+# Help menu
+help:
+  title: "&d━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  noPermissions: "&cLo siento, parece que no tienes permisos. Por favor, contacta a un administrador o adquiere un rango para obtener permisos."
+  languageCommand: "&d  /njm language&5 - Establece tu idioma"
+  setJoinMessage: "&d  /njm set join <mensaje>&5 - Establece tu mensaje de bienvenida"
+  setLeaveMessage: "&d  /njm set leave <mensaje>&5 - Establece tu mensaje de despedida"
+  setPlayerMessage: "&d  /njm setplayer <jugador> join/leave <mensaje>&5 - Establece el mensaje de bienvenida de otro jugador"
+  clearMessages: "&d  /njm clear all/join/leave [jugador]&5 - Para borrar los mensajes de bienvenida/despedida de los jugadores"
+  openGui: "&d  /njm gui&5 - Para abrir la interfaz gráfica"
+  viewInfo: "&d  /njm info [jugador]&5 - Para ver la información de otro jugador"
+  reloadPlugin: "&d  /njm reload&5 - Recargar el plugin"
+  currentJoinMessage: "&aTu mensaje de bienvenida actual: "
+  currentLeaveMessage: "&aTu mensaje de despedida actual: "
+  usingDefaultMessage: "&7Usando el mensaje por defecto"
+  footer: "&d━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

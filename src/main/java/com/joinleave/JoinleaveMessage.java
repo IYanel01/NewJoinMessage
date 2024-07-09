@@ -281,7 +281,6 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
             YamlConfiguration fireworkConfig = new YamlConfiguration();
             try {
                 fireworkConfig.load(fireworkFile);
-                getLogger().info("firework.yml reloaded successfully.");
             } catch (IOException | InvalidConfigurationException e) {
                 getLogger().severe("Failed to reload firework.yml: " + e.getMessage());
             }

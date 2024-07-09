@@ -33,3 +33,37 @@ setplayer_no_permission: "&cDu hast keine Berechtigung, die Join/Leave-Nachricht
 setplayer_player_not_found: "&cSpieler nicht gefunden."
 setplayer_success: "&aErfolgreich die %type%-Nachricht für Spieler %player% festgelegt."
 setplayer_invalid_type: "&cUngültiger Nachrichtentyp. Verwende 'join' oder 'leave'."
+
+
+
+
+
+# General messages
+plugin-reloaded: "&aPlugin erfolgreich neu geladen."
+
+# Command usage messages
+command-usage:
+  setplayer: "&6Verwendung: &e/njm setplayer <spieler> join/leave <nachricht>"
+  set: "&6Verwendung: &e/njm set join/leave <nachricht>"
+  clear: "&6Verwendung: &e/njm clear all/join/leave [spieler]"
+  info: "&6Verwendung: &e/njm info [spieler]"
+  reload: "&6Verwendung: &e/njm reload"
+  gui: "&6Verwendung: &e/njm gui"
+  language: "&6Verwendung: &e/njm language - Setze deine Sprache"
+
+# Help menu
+help:
+  title: "&d━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  noPermissions: "&cEntschuldigung, es scheint, dass du keine Berechtigungen hast. Bitte kontaktiere einen Administrator oder erhalte einen Rang, um Berechtigungen zu bekommen."
+  languageCommand: "&d  /njm language&5 - Setze deine Sprache"
+  setJoinMessage: "&d  /njm set join <nachricht>&5 - Setze deine Beitrittsnachricht"
+  setLeaveMessage: "&d  /njm set leave <nachricht>&5 - Setze deine Verlassen-Nachricht"
+  setPlayerMessage: "&d  /njm setplayer <spieler> join/leave <nachricht>&5 - Setze die Beitrittsnachricht eines anderen Spielers"
+  clearMessages: "&d  /njm clear all/join/leave [spieler]&5 - Um die Beitritts-/Verlassen-Nachrichten der Spieler zu löschen"
+  openGui: "&d  /njm gui&5 - Um das GUI zu öffnen"
+  viewInfo: "&d  /njm info [spieler]&5 - Um die Informationen eines anderen Spielers zu sehen"
+  reloadPlugin: "&d  /njm reload&5 - Lade das Plugin neu"
+  currentJoinMessage: "&aDeine aktuelle Beitrittsnachricht: "
+  currentLeaveMessage: "&aDeine aktuelle Verlassen-Nachricht: "
+  usingDefaultMessage: "&7Verwendet die Standardnachricht"
+  footer: "&d━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
