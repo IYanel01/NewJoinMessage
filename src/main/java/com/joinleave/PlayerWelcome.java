@@ -1,5 +1,6 @@
 package com.joinleave;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.FireworkEffect;
@@ -13,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.Color;
 
 import java.io.File;
@@ -68,7 +70,6 @@ public class PlayerWelcome implements Listener {
             }
         }
 
-
         if (!playersConfig.isConfigurationSection("players")) {
             playersConfig.createSection("players");
             savePlayersConfig();
@@ -106,7 +107,6 @@ public class PlayerWelcome implements Listener {
         }
     }
 
-
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
@@ -136,11 +136,15 @@ public class PlayerWelcome implements Listener {
 
         if (shouldSendWelcomeMessage) {
             int playerCount = playersConfig.getConfigurationSection("players").getKeys(false).size();
-            String welcomeMessage = ChatColor.translateAlternateColorCodes('&',
-                    "&e&l[!] &7Welcome " + ChatColor.YELLOW + player.getName() + ChatColor.GRAY +
-                            " to the server! You are the " + ChatColor.LIGHT_PURPLE + "#" + playerCount + ChatColor.GRAY + " player!");
+            String welcomeMessage = plugin.getConfig().getString("welcome-message", "&e&l[!] &7Welcome %player% to the server! You are the %count% player!")
+                    .replace("%player%", player.getName())
+                    .replace("%count%", String.valueOf(playerCount));
 
-            Bukkit.broadcastMessage(welcomeMessage);
+            if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+                welcomeMessage = PlaceholderAPI.setPlaceholders(player, welcomeMessage);
+            }
+
+            Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', welcomeMessage));
         }
 
         // Add player to joinedPlayers set and update config if they are joining for the first time

@@ -5,6 +5,9 @@ authors: [ Yanel, oled ]
 description: this plugin is for join/leave message per player
 website: https://zaxnetwork.xyz
 
+
+depend: [PlaceholderAPI]
+
 listeners:
   - com.joinleave.FireworkPlayerJoinListener
   - com.joinleave.PlayerJoinListener

@@ -1,5 +1,7 @@
 package com.joinleave;
 
+
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -27,9 +29,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.List;
-
 
 public class JoinleaveMessage extends JavaPlugin implements Listener {
 
@@ -40,7 +39,6 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
     private static JoinleaveMessage instance;
     private LanguageConfigs languageConfigs;
     private LanguageManager languageManager;
-
 
     public void onEnable() {
         instance = this;
@@ -57,7 +55,6 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
 
         // Register events
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(languageManager), this);
-
 
         Bukkit.getScheduler().runTask(this, () -> {
             ConsoleCommandSender console = Bukkit.getConsoleSender();
@@ -92,9 +89,6 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
             });
         });
 
-
-
-
         int pluginId = 18952;
         Metrics Metrics = new Metrics(this, pluginId);
         PlayerWelcome playerWelcome = new PlayerWelcome(this);
@@ -126,7 +120,6 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
         // Register the command executor for the '/njm' command
         getCommand("njm").setExecutor(new JoinleaveCommand(this));
     }
-
 
     @Override
     public void onDisable() {
@@ -209,8 +202,6 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
         }
     }
 
-
-
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> completions = new ArrayList<>();
@@ -244,9 +235,6 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
         Collections.sort(completions);
         return completions;
     }
-
-
-
 
     public void reloadPlugin(CommandSender sender) {
         // List of config files
@@ -334,8 +322,6 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
         }
     }
 
-
-
     public void clearMessage(Player player, String messageType) {
         if (messageType.equals("all")) {
             // Clear all join/leave messages for the player
@@ -362,10 +348,19 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
         String defaultJoinPrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("default-join-prefix").replace("PLAYERNAME", playerName));
         String joinEditable = getMessage(player, "join", "default-join-message");
 
-        String joinMessage = joinPrefix + " " + defaultJoinPrefix + ChatColor.GRAY + " - " + parseMessage(joinEditable, player);
+        String joinMessage = joinPrefix + " " + defaultJoinPrefix;
+        if (getConfig().getBoolean("join-separator", true)) {
+            joinMessage += ChatColor.GRAY + " - ";
+        }
+        joinMessage += parseMessage(joinEditable, player);
+
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            joinMessage = PlaceholderAPI.setPlaceholders(player, joinMessage);
+        }
 
         event.setJoinMessage(joinMessage);
     }
+
 
     @EventHandler
     public void handleLeave(PlayerQuitEvent event) {
@@ -376,10 +371,19 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
         String defaultLeavePrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("default-leave-prefix").replace("PLAYERNAME", playerName));
         String leaveEditable = getMessage(player, "leave", "default-leave-message");
 
-        String leaveMessage = leavePrefix + " " + defaultLeavePrefix + ChatColor.GRAY + " - " + parseMessage(leaveEditable, player);
+        String leaveMessage = leavePrefix + " " + defaultLeavePrefix;
+        if (getConfig().getBoolean("leave-separator", true)) {
+            leaveMessage += ChatColor.GRAY + " - ";
+        }
+        leaveMessage += parseMessage(leaveEditable, player);
+
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            leaveMessage = PlaceholderAPI.setPlaceholders(player, leaveMessage);
+        }
 
         event.setQuitMessage(leaveMessage);
     }
+
 
     private String parseMessage(String message, Player player) {
         String parsedMessage = ChatColor.translateAlternateColorCodes('&', message);
@@ -390,10 +394,6 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
 
         return parsedMessage;
     }
-
-
-
-
 
     private void reloadPlayersConfig() {
         playersFile = new File(getDataFolder(), "data.yml");
@@ -425,7 +425,6 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
         savePlayersConfig();
     }
 
-
     public String getMessage(Player player, String messageType, String defaultMessageType) {
         if (mysqlEnabled) {
             try {
@@ -455,5 +454,3 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
         return getConfig().getString(defaultMessageType);
     }
 }
-
-

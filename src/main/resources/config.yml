@@ -35,6 +35,9 @@ leave-prefix: "&7[&c-&7]"
 default-join-prefix: "&7PLAYERNAME &5has joined"
 default-leave-prefix: "&4PLAYERNAME has left"
 
+# Separator configuration it's before the custom join/leave message For example: PLAYERNAME has joined '-' Hello everyone
+join-separator: true
+leave-separator: true
 
 #default Join/Leave Message by Player (PLAYERNAME has joined/left - Welcome!/Goodbye)
 default-join-message: "&dWelcome!"
@@ -48,10 +51,10 @@ default-leave-message: "&cGoodbye!"
 # - everytime: show the welcome message every time a player joins
 # - firstjoinonly: show the welcome message only the first time a player joins
 # - disable: do not show the welcome message
-welcome-message-enabled: everytime
+welcome-message-enabled: firstjoinonly
 
 # Customize the welcome message
-welcome-message: "&e&l[!] &7Welcome %player% to the server! You are the %count% player!"
+welcome-message: "&e&l[!] &7Welcome %player% to the server! You are the &e&l%count% &7player!"
 
 
 
