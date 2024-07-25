@@ -17,12 +17,7 @@ import org.bukkit.Color;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.Arrays; // Import Arrays from java.util package
+import java.util.*;
 
 public class PlayerWelcome implements Listener {
 
@@ -73,6 +68,7 @@ public class PlayerWelcome implements Listener {
             }
         }
 
+
         if (!playersConfig.isConfigurationSection("players")) {
             playersConfig.createSection("players");
             savePlayersConfig();
@@ -110,15 +106,35 @@ public class PlayerWelcome implements Listener {
         }
     }
 
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         UUID playerId = player.getUniqueId();
 
-        // Always perform these actions regardless of whether player has joined before
-        boolean welcomeMessageEnabled = plugin.getConfig().getBoolean("welcome-message-enabled", true); // Check if welcome message is enabled
+        // Check if welcome message is enabled
+        String welcomeMessageSetting = plugin.getConfig().getString("welcome-message-enabled", "everytime");
 
-        if (welcomeMessageEnabled) {
+        // Handle welcome message
+        boolean shouldSendWelcomeMessage = false;
+
+        switch (welcomeMessageSetting.toLowerCase()) {
+            case "everytime":
+                shouldSendWelcomeMessage = true;
+                break;
+            case "firstjoinonly":
+                if (!joinedPlayers.contains(playerId)) {
+                    shouldSendWelcomeMessage = true;
+                }
+                break;
+            case "disable":
+                shouldSendWelcomeMessage = false;
+                break;
+            default:
+                plugin.getLogger().warning("Invalid welcome message setting: " + welcomeMessageSetting);
+        }
+
+        if (shouldSendWelcomeMessage) {
             int playerCount = playersConfig.getConfigurationSection("players").getKeys(false).size();
             String welcomeMessage = ChatColor.translateAlternateColorCodes('&',
                     "&e&l[!] &7Welcome " + ChatColor.YELLOW + player.getName() + ChatColor.GRAY +
@@ -127,8 +143,12 @@ public class PlayerWelcome implements Listener {
             Bukkit.broadcastMessage(welcomeMessage);
         }
 
-        playersConfig.set("players." + playerId + ".name", player.getName());
-        savePlayersConfig();
+        // Add player to joinedPlayers set and update config if they are joining for the first time
+        if (!joinedPlayers.contains(playerId)) {
+            joinedPlayers.add(playerId);
+            playersConfig.set("players." + playerId + ".name", player.getName());
+            savePlayersConfig();
+        }
 
         // Firework display
         boolean fireworkEnabled = fireworksConfig.getBoolean("fireworks.enabled", true); // Corrected accessing boolean value
@@ -148,11 +168,6 @@ public class PlayerWelcome implements Listener {
             launchFirework(location, fireworkType, fireworkPower);
         }
     }
-
-
-
-
-
 
     private void launchFirework(Location location, FireworkEffect.Type type, int power) {
         Firework firework = location.getWorld().spawn(location, Firework.class);

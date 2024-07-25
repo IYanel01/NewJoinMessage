@@ -43,8 +43,12 @@ default-leave-message: "&cGoodbye!"
 
 # Configuration file for New Player Welcome
 
-# Enable/disable the welcome message
-welcome-message-enabled: false
+# welcome message
+# Options:
+# - everytime: show the welcome message every time a player joins
+# - firstjoinonly: show the welcome message only the first time a player joins
+# - disable: do not show the welcome message
+welcome-message-enabled: everytime
 
 # Customize the welcome message
 welcome-message: "&e&l[!] &7Welcome %player% to the server! You are the %count% player!"
