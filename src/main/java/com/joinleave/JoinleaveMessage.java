@@ -41,6 +41,16 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
     private LanguageManager languageManager;
 
     public void onEnable() {
+
+        // Check the Minecraft version
+        String version = Bukkit.getBukkitVersion();
+        if (version.startsWith("1.21")) {
+            getLogger().severe("Version 1.21 is not supported. Disabling plugin.");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
+
         instance = this;
         saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(this, this);
@@ -123,9 +133,12 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        savePlayersConfig();
+        if (playersConfig != null) {
+            savePlayersConfig();
+        }
         closeMySQLConnection();
     }
+
 
     // Example method to handle player join event
     public void onPlayerJoin(Player player) {
@@ -202,39 +215,6 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
         }
     }
 
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        List<String> completions = new ArrayList<>();
-
-        if (args.length == 1) {
-            List<String> subCommands = new ArrayList<>();
-            subCommands.add("setplayer");
-            subCommands.add("set");
-            subCommands.add("gui");
-            subCommands.add("clear");
-            subCommands.add("reload");
-            StringUtil.copyPartialMatches(args[0], subCommands, completions);
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("setplayer")) {
-            List<String> playerNames = new ArrayList<>();
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                playerNames.add(player.getName());
-            }
-            StringUtil.copyPartialMatches(args[1], playerNames, completions);
-        } else if (args.length == 3 && args[0].equalsIgnoreCase("setplayer")) {
-            List<String> messageTypes = new ArrayList<>();
-            messageTypes.add("join");
-            messageTypes.add("leave");
-            StringUtil.copyPartialMatches(args[2], messageTypes, completions);
-        } else if (args.length == 2 && (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("clear"))) {
-            List<String> messageTypes = new ArrayList<>();
-            messageTypes.add("join");
-            messageTypes.add("leave");
-            StringUtil.copyPartialMatches(args[1], messageTypes, completions);
-        }
-
-        Collections.sort(completions);
-        return completions;
-    }
 
     public void reloadPlugin(CommandSender sender) {
         // List of config files
