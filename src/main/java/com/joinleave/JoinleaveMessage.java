@@ -366,7 +366,7 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
 
 
     private String parseMessage(String message, Player player) {
-        String parsedMessage = ChatColor.translateAlternateColorCodes('&', message);
+        String parsedMessage = ChatColor.translateAlternateColorCodes('&', message).trim();
 
         if (parsedMessage.contains("PLAYERNAME")) {
             parsedMessage = parsedMessage.replace("PLAYERNAME", player.getName());
@@ -374,6 +374,7 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
 
         return parsedMessage;
     }
+
 
     private void reloadPlayersConfig() {
         playersFile = new File(getDataFolder(), "data.yml");

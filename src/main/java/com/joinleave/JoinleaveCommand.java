@@ -181,6 +181,10 @@ public class JoinleaveCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage(" ");
                 sender.sendMessage(ChatColor.LIGHT_PURPLE + languageHandler.getMessage(player, "help.viewInfo"));
             }
+           {
+                sender.sendMessage(" ");
+                sender.sendMessage(ChatColor.LIGHT_PURPLE + languageHandler.getMessage(player, "help.languageCommand"));
+            }
             if (hasReloadPermission) {
                 sender.sendMessage(" ");
                 sender.sendMessage(ChatColor.LIGHT_PURPLE + languageHandler.getMessage(player, "help.reloadPlugin"));
