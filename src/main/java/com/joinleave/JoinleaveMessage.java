@@ -322,17 +322,28 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
     @EventHandler
     public void handleJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        String playerName = player.getName();
 
-        String joinPrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("join-prefix"));
-        String defaultJoinPrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("default-join-prefix").replace("PLAYERNAME", playerName));
-        String joinEditable = getMessage(player, "join", "default-join-message");
+        // Check if join messages are enabled
+        if (!getConfig().getBoolean("toggle-join-message", true)) {
+            event.setJoinMessage(null);
+            return;
+        }
+
+        String playerName = player.getName();
+        String joinPrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("join-prefix").trim());
+        String defaultJoinPrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("default-join-prefix").replace("PLAYERNAME", playerName).trim());
 
         String joinMessage = joinPrefix + " " + defaultJoinPrefix;
-        if (getConfig().getBoolean("join-separator", true)) {
-            joinMessage += ChatColor.GRAY + " - ";
+
+        // Check if custom join messages are enabled
+        if (getConfig().getBoolean("toggle-join-custommessage", true)) {
+            String joinEditable = getMessage(player, "join", "default-join-message");
+
+            if (getConfig().getBoolean("join-separator", true)) {
+                joinMessage += ChatColor.GRAY + " - ";
+            }
+            joinMessage += parseMessage(joinEditable, player);
         }
-        joinMessage += parseMessage(joinEditable, player);
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             joinMessage = PlaceholderAPI.setPlaceholders(player, joinMessage);
@@ -341,21 +352,31 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
         event.setJoinMessage(joinMessage);
     }
 
-
     @EventHandler
     public void handleLeave(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        String playerName = player.getName();
 
-        String leavePrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("leave-prefix"));
-        String defaultLeavePrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("default-leave-prefix").replace("PLAYERNAME", playerName));
-        String leaveEditable = getMessage(player, "leave", "default-leave-message");
+        // Check if leave messages are enabled
+        if (!getConfig().getBoolean("toggle-leave-message", true)) {
+            event.setQuitMessage(null);
+            return;
+        }
+
+        String playerName = player.getName();
+        String leavePrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("leave-prefix").trim());
+        String defaultLeavePrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("default-leave-prefix").replace("PLAYERNAME", playerName).trim());
 
         String leaveMessage = leavePrefix + " " + defaultLeavePrefix;
-        if (getConfig().getBoolean("leave-separator", true)) {
-            leaveMessage += ChatColor.GRAY + " - ";
+
+        // Check if custom leave messages are enabled
+        if (getConfig().getBoolean("toggle-leave-custommessage", true)) {
+            String leaveEditable = getMessage(player, "leave", "default-leave-message");
+
+            if (getConfig().getBoolean("leave-separator", true)) {
+                leaveMessage += ChatColor.GRAY + " - ";
+            }
+            leaveMessage += parseMessage(leaveEditable, player);
         }
-        leaveMessage += parseMessage(leaveEditable, player);
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             leaveMessage = PlaceholderAPI.setPlaceholders(player, leaveMessage);
@@ -365,8 +386,10 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
     }
 
 
+
     private String parseMessage(String message, Player player) {
-        String parsedMessage = ChatColor.translateAlternateColorCodes('&', message).trim();
+        // Trim the message to remove leading and trailing spaces
+        String parsedMessage = ChatColor.translateAlternateColorCodes('&', message.trim()).trim();
 
         if (parsedMessage.contains("PLAYERNAME")) {
             parsedMessage = parsedMessage.replace("PLAYERNAME", player.getName());
@@ -374,6 +397,7 @@ public class JoinleaveMessage extends JavaPlugin implements Listener {
 
         return parsedMessage;
     }
+
 
 
     private void reloadPlayersConfig() {

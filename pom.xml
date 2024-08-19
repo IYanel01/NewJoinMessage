@@ -6,7 +6,7 @@
 
     <groupId>com</groupId>
     <artifactId>joinleave</artifactId>
-    <version>2.3 Beta</version>
+    <version>2.9 Beta</version>
     <packaging>jar</packaging>
 
     <name>JoinleaveMessage</name>

@@ -1,5 +1,5 @@
 name: NewJoinMessage
-version: '2.8 Beta'
+version: '2.9 Beta'
 main: com.joinleave.JoinleaveMessage
 authors: [ Yanel, oled ]
 description: this plugin is for join/leave message per player

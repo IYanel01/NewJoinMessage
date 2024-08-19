@@ -5,7 +5,7 @@
 
 about:
   - "NewJoinMessage Plugin"
-  - "Version: 2.8 Beta"
+  - "Version: 2.9 Beta"
   - "Author: [Yanel, oled]"
 
 
@@ -43,6 +43,14 @@ leave-separator: true
 default-join-message: "&dWelcome!"
 default-leave-message: "&cGoodbye!"
 
+# Toggle for join/leave custom messages
+toggle-join-custommessage: true
+toggle-leave-custommessage: true
+
+
+# Toggle for join/leave messages
+toggle-join-message: true
+toggle-leave-message: true
 
 # Configuration file for New Player Welcome
 
